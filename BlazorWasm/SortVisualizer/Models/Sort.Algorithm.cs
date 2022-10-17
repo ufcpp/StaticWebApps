@@ -6,12 +6,24 @@ public partial class Sort
 
     private static readonly Algorithm[] _algorithms = new Algorithm[]
     {
-        new("Bubble Sort", BubbleSort),
-        new("Quick Sort", QuickSort),
+        new InPlaceAlgorithm("Bubble Sort", BubbleSort),
+        new InPlaceAlgorithm("Quick Sort", QuickSort),
     };
 
-    public record struct Algorithm(string Name, Func<int[], IEnumerable<Operation>> Sorter)
+    public abstract record Algorithm(string Name)
     {
-        public State Start(int[] array) => new(array, this);
+        public abstract IEnumerable<Operation> Start(int[] array);
+    }
+
+    public record InPlaceAlgorithm(string Name, Func<int[], IEnumerable<Operation>> Sorter)
+        : Algorithm(Name)
+    {
+        public override IEnumerable<Operation> Start(int[] array) => Sorter(array);
+    }
+
+    public record OutOfPlaceAlgorithm(string Name, Func<int[], int[], IEnumerable<Operation>> Sorter)
+        : Algorithm(Name)
+    {
+        public override IEnumerable<Operation> Start(int[] array) => Sorter(array, new int[array.Length]);
     }
 }

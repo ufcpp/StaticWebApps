@@ -73,7 +73,7 @@
 
     private void ShuffleArray() => _array = Util.GetShuffledArray(100);
 
-    private void ResetStates() => _sortStates = Sort.Algorithms.Select(a => a.Start(_array.ToArray())).ToArray();
+    private void ResetStates() => _sortStates = Sort.Algorithms.Select(a => Sort.Start(_array.ToArray(), a)).ToArray();
 
     async Task RunAsync()
     {
