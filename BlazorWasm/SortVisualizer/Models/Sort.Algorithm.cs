@@ -7,6 +7,7 @@ public partial class Sort
     private static readonly Algorithm[] _algorithms = new Algorithm[]
     {
         new InPlaceAlgorithm("Bubble Sort", BubbleSort),
+        new InPlaceAlgorithm("Selection Sort", SelectSort),
         new InPlaceAlgorithm("Heap Sort", HeapSort),
         new InPlaceAlgorithm("Quick Sort", QuickSort),
     };
