@@ -8,6 +8,7 @@ public partial class Sort
     {
         new InPlaceAlgorithm("Bubble Sort", BubbleSort),
         new InPlaceAlgorithm("Selection Sort", SelectSort),
+        new InPlaceAlgorithm("Insert Sort", InsertSort),
         new InPlaceAlgorithm("Heap Sort", HeapSort),
         new InPlaceAlgorithm("Quick Sort", QuickSort),
     };
