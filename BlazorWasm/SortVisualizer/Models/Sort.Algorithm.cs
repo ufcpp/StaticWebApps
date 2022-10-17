@@ -10,6 +10,7 @@ public partial class Sort
         new InPlaceAlgorithm("Selection Sort", SelectSort),
         new InPlaceAlgorithm("Insert Sort", InsertSort),
         new InPlaceAlgorithm("Heap Sort", HeapSort),
+        new InPlaceAlgorithm("Shell Sort", ShellSort),
         new InPlaceAlgorithm("Quick Sort", QuickSort),
     };
 
