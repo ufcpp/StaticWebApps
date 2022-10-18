@@ -6,12 +6,13 @@ public partial class Sort
 
     private static readonly Algorithm[] _algorithms = new Algorithm[]
     {
-        new InPlaceAlgorithm("Bubble Sort", BubbleSort),
-        new InPlaceAlgorithm("Selection Sort", SelectSort),
-        new InPlaceAlgorithm("Insert Sort", InsertSort),
-        new InPlaceAlgorithm("Heap Sort", HeapSort),
-        new InPlaceAlgorithm("Shell Sort", ShellSort),
         new InPlaceAlgorithm("Quick Sort", QuickSort),
+        new InPlaceAlgorithm("Shell Sort", ShellSort),
+        new InPlaceAlgorithm("Heap Sort", HeapSort),
+        new InPlaceAlgorithm("Insert Sort", InsertSort),
+        new InPlaceAlgorithm("Selection Sort", SelectSort),
+        new InPlaceAlgorithm("Bubble Sort", BubbleSort),
+        new InPlaceAlgorithm("Gnome Sort", GnomeSort),
     };
 
     public abstract record Algorithm(string Name)
