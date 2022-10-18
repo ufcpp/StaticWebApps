@@ -125,9 +125,10 @@
 }
 
 @code {
-    public bool _noSequence;
-    public bool _noFooter;
-    public bool _noTitle;
+    bool _noSequence;
+    bool _noFooter;
+    bool _noTitle;
+    string? _algorithmFilter;
 
     int[] _array = null!;
     Sort.State[] _sortStates = null!;
@@ -176,6 +177,10 @@
             {
                 if (uint.TryParse(value, out var v)) _generationSettings.Length = v;
             }
+            else if (key is "algorithm" or "a")
+            {
+                _algorithmFilter = value;
+            }
         }
     }
 
@@ -187,7 +192,9 @@
 
     private void ShuffleArray() => _array = Sequence.Generate(_generationSettings);
 
-    private void ResetStates() => _sortStates = Sort.Algorithms.Select(a => Sort.Start(_array.ToArray(), a)).ToArray();
+    private void ResetStates() => _sortStates = Sort.Algorithms
+        .Where(a => _algorithmFilter == null || a.Name.StartsWith(_algorithmFilter, StringComparison.OrdinalIgnoreCase))
+        .Select(a => Sort.Start(_array.ToArray(), a)).ToArray();
 
     async Task RunAsync()
     {
