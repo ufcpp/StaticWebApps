@@ -3,18 +3,26 @@
 <style>
     div.algorithm {
         display: inline-block;
+        border-style:solid;
+        border-width:1px;
+        border-color:lightblue;
+        margin:1px;
+        padding:1px;
     }
 
     div.name {
         font-size: large;
         font-weight: bold;
         color: forestgreen;
+        text-align:center;
     }
 
     span.bar {
         display: inline-block;
         width: 2px;
         background-color: lightgreen;
+        margin: 0px;
+        padding: 0px;
     }
 
     span.swap {
@@ -49,11 +57,6 @@
         }
     </div>
 }
-
-<div>
-    @*
-    *@
-</div>
 
 @code {
     int[] _array = null!;
