@@ -1,4 +1,5 @@
 @page "/"
+@inject NavigationManager nav
 
 <style>
     div.algorithm {
@@ -39,16 +40,52 @@
     span.compare {
         background-color: green;
     }
+
+    body {
+        margin:0px;
+        padding:0px;
+    }
+
+    div.footer {
+        margin:0px;
+        padding:0px;
+        position: absolute;
+        left: 0pt;
+        right: 0pt;
+        bottom: 0px;
+        overflow:clip;
+        background-color: lightsteelblue;
+    }
+
+    div.footer p {
+        margin:0.5em;
+        padding:0em;
+    }
+
+    div.sequence {
+        display:inline-block;
+    }
+
+    div.run {
+        display:inline-block;
+    }
 </style>
 
 <div>
-    長さ <input type="number" @bind-value="@_generationSettings.Length" min="1" max="300" />
-    重複度 <input type="number" @bind-value="@_generationSettings.Duplication" min="0" step="1" />
-    ランダム度 <input type="number" @bind-value="@_generationSettings.Randomness" min="0" max="5" step="0.1" />
-    降順 <input type="checkbox" @bind-value="@_generationSettings.IsDescending" />
+    @if (!_noSequence)
+    {
+        <div class="sequence">
+            長さ <input type="number" @bind-value="@_generationSettings.Length" min="1" max="300" />
+            重複度 <input type="number" @bind-value="@_generationSettings.Duplication" min="0" step="1" />
+            ランダム度 <input type="number" @bind-value="@_generationSettings.Randomness" min="0" max="5" step="0.1" />
+            降順 <input type="checkbox" @bind-value="@_generationSettings.IsDescending" />
+        </div>
+    }
 
-    <button @onclick="@Shuffle">Shuffle</button>
-    <button @onclick="@RunAsync">Run</button>
+    <div class="run">
+        <button @onclick="@Shuffle">Shuffle</button>
+        <button @onclick="@RunAsync">Run</button>
+    </div>
 </div>
 
 @foreach (var state in _sortStates)
@@ -58,7 +95,10 @@
         : "name running";
 
     <div class="algorithm" title="@state.Description">
-        <div class="@nc">@state.Name</div>
+        @if (!_noTitle)
+        {
+            <div class="@nc">@state.Name</div>
+        }
 
         @for (int i = 0; i < state.Items.Length; i++)
         {
@@ -74,7 +114,21 @@
     </div>
 }
 
+@if (!_noFooter)
+{
+    <div class="footer">
+        <p>
+            ソースコードはこちら: <a href="https://github.com/ufcpp/StaticWebApps/tree/main/BlazorWasm/SortVisualizer">SortVisualizer</a>
+        </p>
+    </div>
+}
+
 @code {
+    bool _noSequence;
+    bool _noFooter;
+    bool _noTitle;
+    string[]? _algorithmFilter;
+
     int[] _array = null!;
     Sort.State[] _sortStates = null!;
     Sequence.GenerationSettings _generationSettings = new()
@@ -83,12 +137,50 @@
         Duplication = 0,
         Randomness = 1,
         IsDescending = false,
-};
+    };
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        ParseQuery(nav.Uri);
         Shuffle();
+    }
+
+    private void ParseQuery(string uri)
+    {
+        var a = uri.Split('?');
+        if (a.Length <= 1) return;
+
+        var q = a[1];
+        var kvs = q.Split('&');
+
+        foreach (var item in kvs)
+        {
+            var kv = item.Split('=');
+            var key = kv[0];
+            var value = kv.ElementAtOrDefault(1);
+
+            if (key is "footer" or "f")
+            {
+                if (value is "0" or "false") _noFooter = true;
+            }
+            else if (key is "sequence" or "seq" or "s")
+            {
+                if (value is "0" or "false") _noSequence = true;
+            }
+            else if (key is "title" or "t")
+            {
+                if (value is "0" or "false") _noTitle = true;
+            }
+            else if (key is "length" or "l")
+            {
+                if (uint.TryParse(value, out var v)) _generationSettings.Length = v;
+            }
+            else if (key is "algorithm" or "a")
+            {
+                _algorithmFilter = value?.Split('_');
+            }
+        }
     }
 
     private void Shuffle()
@@ -99,7 +191,11 @@
 
     private void ShuffleArray() => _array = Sequence.Generate(_generationSettings);
 
-    private void ResetStates() => _sortStates = Sort.Algorithms.Select(a => Sort.Start(_array.ToArray(), a)).ToArray();
+    private void ResetStates() => _sortStates = Sort.Algorithms
+        .Where(a => _algorithmFilter == null
+            || _algorithmFilter.Any(f =>
+                a.Name.StartsWith(f, StringComparison.OrdinalIgnoreCase)))
+        .Select(a => Sort.Start(_array.ToArray(), a)).ToArray();
 
     async Task RunAsync()
     {
