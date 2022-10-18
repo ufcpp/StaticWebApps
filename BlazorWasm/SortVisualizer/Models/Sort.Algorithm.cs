@@ -11,6 +11,7 @@ public partial class Sort
         new InPlaceAlgorithm("Heap Sort", HeapSort),
         new InPlaceAlgorithm("Insert Sort", InsertSort),
         new InPlaceAlgorithm("Selection Sort", SelectSort),
+        new InPlaceAlgorithm("Odd-Even Sort", OddEvenSort),
         new InPlaceAlgorithm("Bubble Sort", BubbleSort),
         new InPlaceAlgorithm("Gnome Sort", GnomeSort),
     };
