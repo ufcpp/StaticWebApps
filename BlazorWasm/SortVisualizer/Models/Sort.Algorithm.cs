@@ -41,16 +41,23 @@ public partial class Sort
             (再帰が深くなった時に切り替える)。
             """
         },
+        new(MergeSort)
+        {
+            Name = "Merge",
+            Description = """
+            O(N log N) の中では遅い部類。
+            in-place じゃない(外部バッファーが必要)。
+            ただ、安定ソートだったり並列化しやすいという利点あり。
+            安定ソートの中では速い方。
+            """
+        },
         new(InPlaceMergeSort)
         {
             Name = "In-place Merge",
             Description = """
             Merge 亜種。
             in-place (ソート対象の配列内で完結して、追加のメモリが不要)になるように変更したもの。
-            その分遅い。
-
-            Merge 自体、O(N log N) の中では遅い部類。
-            ただ、安定ソートだったり並列化しやすいという利点あり。
+            その分だいぶ遅い。
             """
         },
         new(InsertSort)
