@@ -6,16 +6,62 @@ public partial class Sort
 
     private static readonly Algorithm[] _algorithms = new Algorithm[]
     {
-        I(QuickSort, "Quick", "比較・スワップに基づくソートの中で、だいたいは最速。時々苦手なデータあり。"),
-        I(ShellSort, "Shell", "要素数がそんなに多くないうちはむっちゃ速い。速いわりにコードが短い。"),
-        I(HeapSort, "Heap", "O(N log N) ソートの中では遅めだけども、苦手なデータがない。Quick ソートと相補的に使ったりする。"),
-        I(InsertSort, "Insert", "遅いやつ。ただ、おおむねソート済みのデータに対しては速い。"),
-        I(CycleSort, "Cycle", "Selection 系。スワップ回数が理論上最小らしい。"),
-        I(SelectSort, "Selection", "遅いやつ。比較は多いけどもスワップは少ない。"),
-        I(OddEvenSort, "Odd-Even", "Bubble 亜種。奇数・偶数に分けて Bubble ソート。奇遇で並列処理可能なのがメリットらしい。"),
-        I(ShakerSort, "Cocktail shaker", "Bubble 亜種。行ったり来たりすることでスキャン範囲を狭める工夫。"),
-        I(BubbleSort, "Bubble", "入門によく出る遅いやつ。"),
-        I(GnomeSort, "Gnome", "コードが短い。まあ、遅い。"),
+        I(QuickSort, "Quick", """
+            比較・スワップに基づくソートの中で、だいたいのデータで最速。
+            時々苦手なデータあり。
+            """),
+
+        I(ShellSort, "Shell", """
+            要素数がそんなに多くないうちはむっちゃ速い。
+            O(N lon N) ではないけども、数百要素超えても Heap とか Merge よりも速い。
+            速いわりにコードが短い。
+            """),
+
+        I(HeapSort, "Heap", """
+            O(N log N) ソートの中では遅めだけども、苦手なデータがない。
+            Quick ソートと相補的に使ったりする
+            (再帰が深くなった時に切り替える)。
+            """),
+
+        I(InsertSort, "Insert", """
+            遅いやつ。
+            ただ、おおむねソート済みのデータに対しては速い。
+            Quick ソートと相補的に使ったりする
+            (データが短くなってきたときに切り替える)。
+            """),
+
+        I(CycleSort, "Cycle", """
+            Selection 系。
+            スワップ回数が理論上最小らしい。
+            """),
+
+        I(SelectSort, "Selection", """
+            遅いやつ。
+            比較は多いけどもスワップは少ない。
+            """),
+
+        I(OddEvenSort, "Odd-Even", """
+            Bubble 亜種。
+            奇数・偶数に分けて Bubble ソート。
+            奇数・偶数で並列処理可能なのがメリットらしい。
+            正直、見た目が面白いから選んだ。
+            """),
+
+        I(ShakerSort, "Cocktail shaker", """
+            Bubble 亜種。
+            行ったり来たりすることでスキャン範囲を狭める工夫とのこと。
+            正直、見た目が面白いから選んだ。
+            """),
+
+        I(BubbleSort, "Bubble", """
+            入門記事によく出てくる遅いやつ。
+            """),
+
+        I(GnomeSort, "Gnome", """
+            とにかくコードが短い。
+            まあ、その代わり最遅
+            (わざと遅さを競うようなものは除く)。
+            """),
     };
 
     private static InPlaceAlgorithm I(Func<int[], IEnumerable<Operation>> sorter, string name, string? description = null)
