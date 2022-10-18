@@ -12,9 +12,15 @@ public partial class Sort
             """),
 
         I(ShellSort, "Shell", """
+            Insertion 改良版。
             要素数がそんなに多くないうちはむっちゃ速い。
             O(N lon N) ではないけども、数百要素超えても Heap とか Merge よりも速い。
             速いわりにコードが短い。
+            """),
+
+        I(CombSort, "Comb", """
+            Bubble 改良版。
+            Insertion に対する Shell と似たような発想。
             """),
 
         I(HeapSort, "Heap", """
@@ -23,7 +29,7 @@ public partial class Sort
             (再帰が深くなった時に切り替える)。
             """),
 
-        I(InsertSort, "Insert", """
+        I(InsertSort, "Insertion", """
             遅いやつ。
             ただ、おおむねソート済みのデータに対しては速い。
             Quick ソートと相補的に使ったりする
