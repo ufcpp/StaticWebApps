@@ -1,4 +1,5 @@
 @page "/"
+@inject NavigationManager nav
 
 <style>
     div.algorithm {
@@ -95,13 +96,18 @@
     </div>
 }
 
-<div class="footer">
-    <p>
-        ソースコードはこちら: <a href="https://github.com/ufcpp/StaticWebApps/tree/main/BlazorWasm/SortVisualizer">SortVisualizer</a>
-    </p>
-</div>
+@if (!_noFooter)
+{
+    <div class="footer">
+        <p>
+            ソースコードはこちら: <a href="https://github.com/ufcpp/StaticWebApps/tree/main/BlazorWasm/SortVisualizer">SortVisualizer</a>
+        </p>
+    </div>
+}
 
 @code {
+    public bool _noFooter;
+
     int[] _array = null!;
     Sort.State[] _sortStates = null!;
     Sequence.GenerationSettings _generationSettings = new()
@@ -110,12 +116,34 @@
         Duplication = 0,
         Randomness = 1,
         IsDescending = false,
-};
+    };
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
+        ParseQuery(nav.Uri);
         Shuffle();
+    }
+
+    private void ParseQuery(string uri)
+    {
+        var a = uri.Split('?');
+        if (a.Length <= 1) return;
+
+        var q = a[1];
+        var kvs = q.Split('&');
+
+        foreach (var item in kvs)
+        {
+            var kv = item.Split('=');
+            var key = kv[0];
+            var value = kv.ElementAtOrDefault(1);
+
+            if (key == "footer")
+            {
+                if (value is "0" or "false") _noFooter = true;
+            }
+        }
     }
 
     private void Shuffle()
