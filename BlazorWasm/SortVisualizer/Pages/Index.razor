@@ -39,6 +39,27 @@
     span.compare {
         background-color: green;
     }
+
+    body {
+        margin:0px;
+        padding:0px;
+    }
+
+    div.footer {
+        margin:0px;
+        padding:0px;
+        position: absolute;
+        left: 0pt;
+        right: 0pt;
+        bottom: 0px;
+        overflow:clip;
+        background-color: lightsteelblue;
+    }
+
+    div.footer p {
+        margin:0.5em;
+        padding:0em;
+    }
 </style>
 
 <div>
@@ -73,6 +94,12 @@
         }
     </div>
 }
+
+<div class="footer">
+    <p>
+        ソースコードはこちら: <a href="https://github.com/ufcpp/StaticWebApps/tree/main/BlazorWasm/SortVisualizer">SortVisualizer</a>
+    </p>
+</div>
 
 @code {
     int[] _array = null!;
