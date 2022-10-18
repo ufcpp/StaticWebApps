@@ -79,12 +79,11 @@
             重複度 <input type="number" @bind-value="@_generationSettings.Duplication" min="0" step="1" />
             ランダム度 <input type="number" @bind-value="@_generationSettings.Randomness" min="0" max="5" step="0.1" />
             降順 <input type="checkbox" @bind-value="@_generationSettings.IsDescending" />
-
-            <button @onclick="@Shuffle">Shuffle</button>
         </div>
     }
 
     <div class="run">
+        <button @onclick="@Shuffle">Shuffle</button>
         <button @onclick="@RunAsync">Run</button>
     </div>
 </div>
