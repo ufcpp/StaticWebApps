@@ -18,7 +18,7 @@ public partial class Sort
         {
             Name = "Shell",
             Description = """
-            Insertion 改良版。
+            Insertion ソート改良版。
             要素数がそんなに多くないうちはむっちゃ速い。
             O(N lon N) ではないけども、数百要素超えても Heap とか Merge よりも速い。
             速いわりにコードが短い。
@@ -28,7 +28,7 @@ public partial class Sort
         {
             Name = "Comb",
             Description = """
-            Bubble 改良版。
+            Bubble ソート改良版。
             Insertion に対する Shell と似たような発想。
             """
         },
@@ -36,7 +36,7 @@ public partial class Sort
         {
             Name = "Heap",
             Description = """
-            O(N log N) ソートの中では遅めだけども、苦手なデータがない。
+            O(N log N) なソートの中では遅めだけども、苦手なデータがない。
             Quick ソートと相補的に使ったりする
             (再帰が深くなった時に切り替える)。
             """
@@ -55,7 +55,7 @@ public partial class Sort
         {
             Name = "In-place Merge",
             Description = """
-            Merge 亜種。
+            Merge ソート亜種。
             in-place (ソート対象の配列内で完結して、追加のメモリが不要)になるように変更したもの。
             その分だいぶ遅い。
             """
@@ -126,7 +126,7 @@ public partial class Sort
             Name = "Bucket",
             Description = """
             適用できる条件がかなり限られている代わりに爆速。
-            上限・下限が既知の整数配列とかに対して使うと本当に速い。 O(N)。
+            要素の最大値・最小値が既知の整数配列とかに対して使うと本当に速い。 O(N)。
             """
         },
     };
