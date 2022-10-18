@@ -77,6 +77,11 @@ public partial class Sort
             まあ、その代わり最遅
             (わざと遅さを競うようなものは除く)。
             """),
+
+        I(BucketSort, "Bucket", """
+            適用できる条件がかなり限られている代わりに爆速。
+            上限・下限が既知の整数配列とかに対して使うと本当に速い。 O(N)。
+            """),
     };
 
     private static InPlaceAlgorithm I(Func<int[], IEnumerable<Operation>> sorter, string name, string? description = null)
@@ -98,8 +103,11 @@ public partial class Sort
         public override IEnumerable<Operation> Start(int[] array) => Sorter(array);
     }
 
-    public record OutOfPlaceAlgorithm(Func<int[], int[], IEnumerable<Operation>> Sorter) : Algorithm
+    public record OutOfPlaceAlgorithm<TBuffer>(
+        Func<int[], TBuffer> GetBuffer,
+        Func<int[], TBuffer, IEnumerable<Operation>> Sorter)
+        : Algorithm
     {
-        public override IEnumerable<Operation> Start(int[] array) => Sorter(array, new int[array.Length]);
+        public override IEnumerable<Operation> Start(int[] array) => Sorter(array, GetBuffer(array));
     }
 }
