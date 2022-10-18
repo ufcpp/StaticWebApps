@@ -29,6 +29,15 @@ public partial class Sort
             (再帰が深くなった時に切り替える)。
             """),
 
+        I(InPlaceMergeSort, "In-place Merge", """
+            Merge 亜種。
+            in-place (ソート対象の配列内で完結して、追加のメモリが不要)になるように変更したもの。
+            その分遅い。
+
+            Merge 自体、O(N log N) の中では遅い部類。
+            ただ、安定ソートだったり並列化しやすいという利点あり。
+            """),
+
         I(InsertSort, "Insertion", """
             遅いやつ。
             ただ、おおむねソート済みのデータに対しては速い。
