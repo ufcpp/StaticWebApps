@@ -33,7 +33,7 @@
 
 @foreach (var state in _sortStates)
 {
-    <div class="algorithm">
+    <div class="algorithm" title="@state.Description">
         <div class="name">@state.Name</div>
 
         @for (int i = 0; i < state.Items.Length; i++)
