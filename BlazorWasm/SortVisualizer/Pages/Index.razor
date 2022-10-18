@@ -127,7 +127,7 @@
     bool _noSequence;
     bool _noFooter;
     bool _noTitle;
-    string? _algorithmFilter;
+    string[]? _algorithmFilter;
 
     int[] _array = null!;
     Sort.State[] _sortStates = null!;
@@ -178,7 +178,7 @@
             }
             else if (key is "algorithm" or "a")
             {
-                _algorithmFilter = value;
+                _algorithmFilter = value?.Split('_');
             }
         }
     }
@@ -192,7 +192,9 @@
     private void ShuffleArray() => _array = Sequence.Generate(_generationSettings);
 
     private void ResetStates() => _sortStates = Sort.Algorithms
-        .Where(a => _algorithmFilter == null || a.Name.StartsWith(_algorithmFilter, StringComparison.OrdinalIgnoreCase))
+        .Where(a => _algorithmFilter == null
+            || _algorithmFilter.Any(f =>
+                a.Name.StartsWith(f, StringComparison.OrdinalIgnoreCase)))
         .Select(a => Sort.Start(_array.ToArray(), a)).ToArray();
 
     async Task RunAsync()
