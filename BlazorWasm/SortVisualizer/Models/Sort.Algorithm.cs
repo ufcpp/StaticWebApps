@@ -6,29 +6,36 @@ public partial class Sort
 
     private static readonly Algorithm[] _algorithms = new Algorithm[]
     {
-        new InPlaceAlgorithm("Quick Sort", QuickSort),
-        new InPlaceAlgorithm("Shell Sort", ShellSort),
-        new InPlaceAlgorithm("Heap Sort", HeapSort),
-        new InPlaceAlgorithm("Insert Sort", InsertSort),
-        new InPlaceAlgorithm("Selection Sort", SelectSort),
-        new InPlaceAlgorithm("Odd-Even Sort", OddEvenSort),
-        new InPlaceAlgorithm("Bubble Sort", BubbleSort),
-        new InPlaceAlgorithm("Gnome Sort", GnomeSort),
+        I(QuickSort, "Quick Sort"),
+        I(ShellSort, "Shell Sort"),
+        I(HeapSort, "Heap Sort"),
+        I(InsertSort, "Insert Sort"),
+        I(SelectSort, "Selection Sort"),
+        I(OddEvenSort, "Odd-Even Sort"),
+        I(BubbleSort, "Bubble Sort"),
+        I(GnomeSort, "Gnome Sort"),
     };
 
-    public abstract record Algorithm(string Name)
+    private static InPlaceAlgorithm I(Func<int[], IEnumerable<Operation>> sorter, string name, string? description = null)
+        => new(sorter)
+        {
+            Name = name,
+            Description = description,
+        };
+
+    public abstract record Algorithm
     {
+        public required string Name { get; init; }
+        public string? Description { get; init; }
         public abstract IEnumerable<Operation> Start(int[] array);
     }
 
-    public record InPlaceAlgorithm(string Name, Func<int[], IEnumerable<Operation>> Sorter)
-        : Algorithm(Name)
+    public record InPlaceAlgorithm(Func<int[], IEnumerable<Operation>> Sorter) : Algorithm
     {
         public override IEnumerable<Operation> Start(int[] array) => Sorter(array);
     }
 
-    public record OutOfPlaceAlgorithm(string Name, Func<int[], int[], IEnumerable<Operation>> Sorter)
-        : Algorithm(Name)
+    public record OutOfPlaceAlgorithm(Func<int[], int[], IEnumerable<Operation>> Sorter) : Algorithm
     {
         public override IEnumerable<Operation> Start(int[] array) => Sorter(array, new int[array.Length]);
     }
