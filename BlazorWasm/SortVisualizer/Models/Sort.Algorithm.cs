@@ -13,6 +13,7 @@ public partial class Sort
         I(CycleSort, "Cycle Sort", "Selection 系。スワップ回数が理論上最小らしい。"),
         I(SelectSort, "Selection Sort", "遅いやつ。比較は多いけどもスワップは少ない。"),
         I(OddEvenSort, "Odd-Even Sort", "Bubble 亜種。奇数・偶数に分けて Bubble ソート。奇遇で並列処理可能なのがメリットらしい。"),
+        I(ShakerSort, "Cocktail shaker Sort", "Bubble 亜種。行ったり来たりすることでスキャン範囲を狭める工夫。"),
         I(BubbleSort, "Bubble Sort", "入門によく出る遅いやつ。"),
         I(GnomeSort, "Gnome Sort", "コードが短い。まあ、遅い。"),
     };
