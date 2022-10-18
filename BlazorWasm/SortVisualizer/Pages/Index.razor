@@ -3,11 +3,24 @@
 <style>
     div.algorithm {
         display: inline-block;
+        border-style:solid;
+        border-width:1px;
+        border-color:lightblue;
+        margin:1px;
+        padding:1px;
     }
 
     div.name {
         font-size: large;
         font-weight: bold;
+        text-align:center;
+    }
+
+    div.running {
+        color: dodgerblue;
+    }
+
+    div.done {
         color: forestgreen;
     }
 
@@ -15,6 +28,8 @@
         display: inline-block;
         width: 2px;
         background-color: lightgreen;
+        margin: 0px;
+        padding: 0px;
     }
 
     span.swap {
@@ -27,14 +42,23 @@
 </style>
 
 <div>
+    長さ <input type="number" @bind-value="@_generationSettings.Length" min="1" max="300" />
+    重複度 <input type="number" @bind-value="@_generationSettings.Duplication" min="0" step="1" />
+    ランダム度 <input type="number" @bind-value="@_generationSettings.Randomness" min="0" max="5" step="0.1" />
+    降順 <input type="checkbox" @bind-value="@_generationSettings.IsDescending" />
+
     <button @onclick="@Shuffle">Shuffle</button>
     <button @onclick="@RunAsync">Run</button>
 </div>
 
 @foreach (var state in _sortStates)
 {
-    <div class="algorithm">
-        <div class="name">@state.Name</div>
+    var nc = state.Current.Kind == Sort.Kind.Done
+        ? "name done"
+        : "name running";
+
+    <div class="algorithm" title="@state.Description">
+        <div class="@nc">@state.Name</div>
 
         @for (int i = 0; i < state.Items.Length; i++)
         {
@@ -42,7 +66,7 @@
             var (kind, i1, i2) = state.Current;
 
             var c = "bar";
-            if (i == i1 || i == i2)
+            if ((i == i1 || i == i2) && kind != Sort.Kind.Done)
                 c = kind == Sort.Kind.Compare ? "bar compare" : "bar swap";
 
             <span class="@c" style="height:@(x)px;"></span>
@@ -50,14 +74,16 @@
     </div>
 }
 
-<div>
-    @*
-    *@
-</div>
-
 @code {
     int[] _array = null!;
     Sort.State[] _sortStates = null!;
+    Sequence.GenerationSettings _generationSettings = new()
+    {
+        Length = 100,
+        Duplication = 0,
+        Randomness = 1,
+        IsDescending = false,
+};
 
     protected override void OnInitialized()
     {
@@ -71,7 +97,7 @@
         ResetStates();
     }
 
-    private void ShuffleArray() => _array = Util.GetShuffledArray(100);
+    private void ShuffleArray() => _array = Sequence.Generate(_generationSettings);
 
     private void ResetStates() => _sortStates = Sort.Algorithms.Select(a => Sort.Start(_array.ToArray(), a)).ToArray();
 
