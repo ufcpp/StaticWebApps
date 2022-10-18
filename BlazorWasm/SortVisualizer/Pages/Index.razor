@@ -96,7 +96,10 @@
         : "name running";
 
     <div class="algorithm" title="@state.Description">
-        <div class="@nc">@state.Name</div>
+        @if (!_noTitle)
+        {
+            <div class="@nc">@state.Name</div>
+        }
 
         @for (int i = 0; i < state.Items.Length; i++)
         {
@@ -164,6 +167,14 @@
             else if (key is "sequence" or "seq" or "s")
             {
                 if (value is "0" or "false") _noSequence = true;
+            }
+            else if (key is "title" or "t")
+            {
+                if (value is "0" or "false") _noTitle = true;
+            }
+            else if (key is "length" or "l")
+            {
+                if (uint.TryParse(value, out var v)) _generationSettings.Length = v;
             }
         }
     }
