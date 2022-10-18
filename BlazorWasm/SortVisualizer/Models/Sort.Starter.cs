@@ -15,7 +15,9 @@ public partial class Sort
         {
             _algorithm = algorithm;
             _array = array;
-            _sortOperations = algorithm.Start(array).GetEnumerator();
+            _sortOperations = algorithm.Start(array)
+                .Append(new(Kind.Done, -1, -1)) // 最後に Compare/Swap 表示が残らないように。
+                .GetEnumerator();
         }
 
         public State(int[] array, int[] buffer, Algorithm algorithm)

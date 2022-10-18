@@ -13,8 +13,15 @@
     div.name {
         font-size: large;
         font-weight: bold;
-        color: forestgreen;
         text-align:center;
+    }
+
+    div.running {
+        color: dodgerblue;
+    }
+
+    div.done {
+        color: forestgreen;
     }
 
     span.bar {
@@ -41,8 +48,12 @@
 
 @foreach (var state in _sortStates)
 {
+    var nc = state.Current.Kind == Sort.Kind.Done
+        ? "name done"
+        : "name running";
+
     <div class="algorithm" title="@state.Description">
-        <div class="name">@state.Name</div>
+        <div class="@nc">@state.Name</div>
 
         @for (int i = 0; i < state.Items.Length; i++)
         {
@@ -50,7 +61,7 @@
             var (kind, i1, i2) = state.Current;
 
             var c = "bar";
-            if (i == i1 || i == i2)
+            if ((i == i1 || i == i2) && kind != Sort.Kind.Done)
                 c = kind == Sort.Kind.Compare ? "bar compare" : "bar swap";
 
             <span class="@c" style="height:@(x)px;"></span>
