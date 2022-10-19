@@ -23,7 +23,7 @@ public static partial class Sequence
         /// ランダム度合い。
         /// </summary>
         /// <remarks>
-        /// 現実装だと、 <see cref="Length"/> × <see cref="Randomness"/> 回シャッフルすることでランダム度合いを調整。
+        /// 現実装だと、 <see cref="Length"/> × <see cref="Randomness"/> に比例した回数シャッフルすることでランダム度合いを調整。
         /// </remarks>
         public float Randomness { get; set; }
 
@@ -61,7 +61,7 @@ public static partial class Sequence
             array.Reverse();
         }
 
-        var shuffle = (int)(settings.Length * settings.Randomness);
+        var shuffle = 2 * (int)(settings.Length * settings.Randomness);
         Shuffle(random, array, shuffle);
         return array;
     }
