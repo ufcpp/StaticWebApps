@@ -40,16 +40,16 @@ public static partial class Sequence
         var array = new int[settings.Length];
 
         var step = (int)settings.Duplication + 1;
-        var counter = step;
+        var counter = 0;
         var value = step;
         int next()
         {
-            --counter;
-            if (counter == 0)
+            if (counter == step)
             {
                 value += step;
-                counter = step;
+                counter = 0;
             }
+            ++counter;
             return value;
         }
 
