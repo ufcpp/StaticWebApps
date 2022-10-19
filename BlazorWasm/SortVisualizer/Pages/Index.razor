@@ -103,6 +103,15 @@
         <button @onclick="@Shuffle">Shuffle</button>
         <button @onclick="@RunAsync">Run</button>
     </div>
+
+    @if (!_noFooter)
+    {
+        <div class="info">
+            <p>
+                ソースコードはこちら: <a href="https://github.com/ufcpp/StaticWebApps/tree/main/BlazorWasm/SortVisualizer">SortVisualizer</a>
+            </p>
+        </div>
+    }
 </div>
 
 @foreach (var state in _sortStates)
