@@ -1,20 +1,29 @@
 @page "/"
 @inject NavigationManager nav
+@{
+    const float Size = 250;
+    var SizePx = $"{Size}px";
+}
 
 <style>
     div.algorithm {
         display: inline-block;
         border-style:solid;
         border-width:1px;
-        border-color:lightblue;
-        margin:1px;
-        padding:1px;
+        border-color:darkcyan;
+        margin: 0px 1px 0px 1px;
+        padding: 0px;
+        position:relative;
     }
 
     div.name {
+        display: block;
         font-size: large;
         font-weight: bold;
         text-align:center;
+        width: @SizePx;
+        position: absolute;
+        z-index:1;
     }
 
     div.running {
@@ -25,9 +34,17 @@
         color: forestgreen;
     }
 
+    div.bars {
+        width: @SizePx;
+        height: @SizePx;
+        flex-wrap: nowrap;
+        display: flex;
+        align-items: flex-end;
+    }
+
     span.bar {
         display: inline-block;
-        width: 2px;
+        width: 1px;
         background-color: lightgreen;
         margin: 0px;
         padding: 0px;
@@ -52,13 +69,13 @@
         position: absolute;
         left: 0pt;
         right: 0pt;
-        bottom: 0px;
+        top: 0px;
+        text-align:right;
         overflow:clip;
-        background-color: lightsteelblue;
     }
 
     div.footer p {
-        margin:0.5em;
+        margin:0.1em;
         padding:0em;
     }
 
@@ -71,7 +88,7 @@
     }
 </style>
 
-<div>
+<div class="header">
     @if (!_noSequence)
     {
         <div class="sequence">
@@ -100,26 +117,26 @@
             <div class="@nc">@state.Name</div>
         }
 
-        @for (int i = 0; i < state.Items.Length; i++)
-        {
-            var x = state.Items[i];
-            var (kind, i1, i2) = state.Current;
+        <div class="bars">
+            @{
+                var w = Size / state.Items.Length;
+                var wpx = $"{w}px";
+                var h = Size / state.Items.Length;
+            }
+            @for (int i = 0; i < state.Items.Length; i++)
+            {
+                var (kind, i1, i2) = state.Current;
 
-            var c = "bar";
-            if ((i == i1 || i == i2) && kind != Sort.Kind.Done)
-                c = kind == Sort.Kind.Compare ? "bar compare" : "bar swap";
+                var c = "bar";
+                if ((i == i1 || i == i2) && kind != Sort.Kind.Done)
+                    c = kind == Sort.Kind.Compare ? "bar compare" : "bar swap";
 
-            <span class="@c" style="height:@(x)px;"></span>
-        }
-    </div>
-}
+                var x = (int)Math.Floor(h * state.Items[i]);
+                var hpx = $"{x}px";
 
-@if (!_noFooter)
-{
-    <div class="footer">
-        <p>
-            ソースコードはこちら: <a href="https://github.com/ufcpp/StaticWebApps/tree/main/BlazorWasm/SortVisualizer">SortVisualizer</a>
-        </p>
+                <span class="@c" style="width: @wpx; height:@hpx;"></span>
+            }
+        </div>
     </div>
 }
 
