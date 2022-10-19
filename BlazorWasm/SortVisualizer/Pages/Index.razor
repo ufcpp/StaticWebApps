@@ -104,7 +104,7 @@
         <button @onclick="@RunAsync">Run</button>
     </div>
 
-    @if (!_noFooter)
+    @if (!_noInfo)
     {
         <div class="info">
             <p>
@@ -150,7 +150,7 @@
 
 @code {
     bool _noSequence;
-    bool _noFooter;
+    bool _noInfo;
     bool _noTitle;
     string[]? _algorithmFilter;
     float _width = 200;
@@ -186,9 +186,9 @@
             var key = kv[0];
             var value = kv.ElementAtOrDefault(1);
 
-            if (key is "footer" or "f")
+            if (key is "info" or "i")
             {
-                if (value is "0" or "false") _noFooter = true;
+                if (value is "0" or "false") _noInfo = true;
             }
             else if (key is "sequence" or "seq" or "s")
             {
