@@ -1,8 +1,7 @@
 @page "/"
 @inject NavigationManager nav
 @{
-    const float Size = 250;
-    var SizePx = $"{Size}px";
+    var widthpx = $"{_width}px";
 }
 
 <style>
@@ -21,7 +20,7 @@
         font-size: large;
         font-weight: bold;
         text-align:center;
-        width: @SizePx;
+        width: @widthpx;
         position: absolute;
         z-index:1;
     }
@@ -35,8 +34,8 @@
     }
 
     div.bars {
-        width: @SizePx;
-        height: @SizePx;
+        width: @widthpx;
+        height: @widthpx;
         flex-wrap: nowrap;
         display: flex;
         align-items: flex-end;
@@ -63,18 +62,19 @@
         padding:0px;
     }
 
-    div.footer {
-        margin:0px;
-        padding:0px;
-        position: absolute;
-        left: 0pt;
-        right: 0pt;
-        top: 0px;
-        text-align:right;
-        overflow:clip;
+    div.header {
+        position:relative;
     }
 
-    div.footer p {
+    div.info {
+        margin:0px;
+        padding:0px;
+        display:inline-block;
+        right:0px;
+        position: absolute;
+    }
+
+    div.info p {
         margin:0.1em;
         padding:0em;
     }
@@ -119,9 +119,8 @@
 
         <div class="bars">
             @{
-                var w = Size / state.Items.Length;
+                var w = _width / state.Items.Length;
                 var wpx = $"{w}px";
-                var h = Size / state.Items.Length;
             }
             @for (int i = 0; i < state.Items.Length; i++)
             {
@@ -131,8 +130,8 @@
                 if ((i == i1 || i == i2) && kind != Sort.Kind.Done)
                     c = kind == Sort.Kind.Compare ? "bar compare" : "bar swap";
 
-                var x = (int)Math.Floor(h * state.Items[i]);
-                var hpx = $"{x}px";
+                var h = (int)Math.Floor(w * state.Items[i]);
+                var hpx = $"{h}px";
 
                 <span class="@c" style="width: @wpx; height:@hpx;"></span>
             }
@@ -145,6 +144,7 @@
     bool _noFooter;
     bool _noTitle;
     string[]? _algorithmFilter;
+    float _width = 200;
 
     int[] _array = null!;
     Sort.State[] _sortStates = null!;
@@ -196,6 +196,10 @@
             else if (key is "algorithm" or "a")
             {
                 _algorithmFilter = value?.Split('_');
+            }
+            else if (key is "width" or "w")
+            {
+                if (float.TryParse(value, out var v)) _width = v;
             }
         }
     }
