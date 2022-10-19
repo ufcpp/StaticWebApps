@@ -58,7 +58,7 @@ public static partial class Sequence
 
         if (settings.IsDescending)
         {
-            array.Reverse();
+            Array.Reverse(array);
         }
 
         var shuffle = 2 * (int)(settings.Length * settings.Randomness);
