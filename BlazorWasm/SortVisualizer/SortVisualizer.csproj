@@ -5,10 +5,8 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <InvariantGlobalization>true</InvariantGlobalization>
-    <BlazorEnableTimeZoneSupport>false</BlazorEnableTimeZoneSupport>
     <PublishTrimmed>true</PublishTrimmed>
-    <TrimMode>link</TrimMode>
-    <RuntimeIdentifier>browser-wasm</RuntimeIdentifier>
+    <BlazorEnableTimeZoneSupport>false</BlazorEnableTimeZoneSupport>
   </PropertyGroup>
 
   <ItemGroup>
