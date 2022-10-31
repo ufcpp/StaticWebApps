@@ -64,12 +64,12 @@ public static IEnumerable<Operation> BubbleSort(int[] a)
 
 オプション指定なし:
 
-<div><iframe src="https://black-ocean-009cb0000.2.azurestaticapps.net/" width="780" height="500"></iframe></div>
+https://black-ocean-009cb0000.2.azurestaticapps.net/
 
 ボタンとかいろいろ消すオプション:
 
-<div><iframe src="https://black-ocean-009cb0000.2.azurestaticapps.net/?i=0&s=0&w=150" width="780" height="500"></iframe></div>
+https://black-ocean-009cb0000.2.azurestaticapps.net/?i=0&s=0&w=150
 
 1種類だけ表示とか:
 
-<div><iframe src="https://black-ocean-009cb0000.2.azurestaticapps.net/?a=quick&i=0&s=0&w=300" width="304" height="332"></iframe></div>
+https://black-ocean-009cb0000.2.azurestaticapps.net/?a=quick&i=0&s=0&w=300
