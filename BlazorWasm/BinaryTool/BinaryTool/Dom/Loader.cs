@@ -41,21 +41,28 @@ public class JsonLoader : ILoader
     {
         string? name = null;
 
-        void add(object? value, Range range)
+        void addValue(object? value, Range range) => add(DomKind.Value, value, range);
+        void addException(Exception value, Range range)
+        {
+            name = "$exception";
+            add(DomKind.Error, value, range);
+        }
+
+        void add(DomKind kind, object? value, Range range)
         {
             if (parent is Map m)
             {
-                results.Add(new(DomKind.Value, range, value, name, 0));
+                results.Add(new(kind, range, value, name, 0));
                 m.Add(name!, value);
             }
             else if (parent is List l)
             {
-                results.Add(new(DomKind.Value, range, value, l.Count, 0));
+                results.Add(new(kind, range, value, l.Count, 0));
                 l.Add(value);
             }
             else
             {
-                results.Add(new(DomKind.Value, range, value, null, 0));
+                results.Add(new(kind, range, value, null, 0));
             }
         }
 
@@ -82,16 +89,13 @@ public class JsonLoader : ILoader
 
         while (true)
         {
-            JsonException? ex = null;
-
             try
             {
                 if (!r.Read()) break;
             }
-            catch (JsonException e) { ex = e; }
-            if (ex != null)
+            catch (JsonException ex)
             {
-                results.Add(new(DomKind.Error, ((int)r.BytesConsumed).., ex, null, 0));
+                addException(ex, (int)r.BytesConsumed..);
                 return;
             }
 
@@ -130,20 +134,20 @@ public class JsonLoader : ILoader
                 case JsonTokenType.Comment:
                     break;
                 case JsonTokenType.String:
-                    add(r.GetString(), r.Range());
+                    addValue(r.GetString(), r.Range());
                     break;
                 case JsonTokenType.Number:
                     object? num = r.TryGetInt64(out var l) ? l : r.TryGetDouble(out var d) ? d : null;
-                    add(num, r.Range());
+                    addValue(num, r.Range());
                     break;
                 case JsonTokenType.True:
-                    add(true, r.Range());
+                    addValue(true, r.Range());
                     break;
                 case JsonTokenType.False:
-                    add(false, r.Range());
+                    addValue(false, r.Range());
                     break;
                 case JsonTokenType.Null:
-                    add(null, r.Range());
+                    addValue(null, r.Range());
                     break;
             }
         }
