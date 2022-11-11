@@ -6,6 +6,17 @@
 </textarea>
 
 <form>
+    <label>parse: </label>
+    <select @bind="selectedParserIndex">
+        @for (int i = 0; i < IParser.DefaultParsers.Length; i++)
+        {
+            <option value="@i">@IParser.DefaultParsers[i].Description</option>
+        }
+    </select>
+</form>
+
+<form>
+    <label>format: </label>
     <select @bind="selectedFormatterIndex">
         @for (int i = 0; i < IFormatter.DefaultFormatters.Length; i++)
         {
@@ -19,8 +30,13 @@
 @code {
     [Parameter] public string? InputText { get; set; }
 
+    int selectedParserIndex;
+    IParser SelectedParser => IParser.DefaultParsers[selectedParserIndex];
+
     int selectedFormatterIndex;
     IFormatter SelectedFormatter => IFormatter.DefaultFormatters[selectedFormatterIndex];
 
-    public string? OutputText => InputText is null ? null : SelectedFormatter.Format(Parser.Parse(InputText, true));
+    public byte[]? OutputBinary => InputText is { } x ? SelectedParser.Parse(x) : null;
+
+    public string? OutputText => OutputBinary is { } x ? SelectedFormatter.Format(x) : null;
 }
