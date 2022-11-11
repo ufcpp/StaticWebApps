@@ -12,6 +12,7 @@ public interface IFormatter
     {
         Concat.SpaceSeparatedDec,
         Concat.SpaceSeparatedHex,
+        Concat.ConsecutiveHex,
         Utf8.Instance,
         Concat.CsharpDec,
         Concat.CsharpDecMultiline,
@@ -44,6 +45,7 @@ public class Concat : IFormatter
 {
     public static readonly Concat SpaceSeparatedDec = new("", " ", "", NumberFormat.Decimal, false);
     public static readonly Concat SpaceSeparatedHex = new("", " ", "", NumberFormat.Hex, false);
+    public static readonly Concat ConsecutiveHex = new("", "", "", NumberFormat.Hex, false);
     public static readonly Concat CsharpDec = new("new byte[] { ", ", ", " }", NumberFormat.Decimal, false);
     public static readonly Concat CsharpDecMultiline = new("new byte[] {\n", ",\n", "}\n", NumberFormat.Decimal, true);
     public static readonly Concat CsharpHex = new("new byte[] { ", ", ", " }", NumberFormat.Hex0x, false);
