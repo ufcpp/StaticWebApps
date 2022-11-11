@@ -1,5 +1,6 @@
 using System.Buffers.Text;
 using System.Collections.Immutable;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace BinaryTool.Binary;
@@ -16,6 +17,7 @@ public interface IParser
         ConsecutiveHexParser.Instance,
         DecimalParser.Instance,
         Base64Parser.Instance,
+        Utf8Parser.Instance,
     });
 }
 
@@ -178,6 +180,14 @@ public class Base64Parser : IParser
             return Array.Empty<byte>();
         }
     }
+}
+
+public class Utf8Parser : IParser
+{
+    public static readonly Utf8Parser Instance = new();
+
+    public string Description => "UTF-8";
+    public byte[] Parse(string input) => Encoding.UTF8.GetBytes(input);
 }
 
 public partial class Parser
