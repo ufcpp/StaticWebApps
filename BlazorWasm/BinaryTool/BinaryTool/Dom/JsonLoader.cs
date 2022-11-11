@@ -1,31 +1,10 @@
 using System.Text.Json;
 
-using List = System.Collections.Generic.List<object?>;
-using Map = System.Collections.Generic.Dictionary<object, object?>;
-
 namespace BinaryTool.Dom;
-
-public enum DomKind
-{
-    Unknown,
-    Object,
-    Array,
-    Value,
-
-    Error = -1,
-}
-
-public interface ILoader
-{
-    string Description { get; }
-    List<DomSpan> Parse(byte[] data);
-}
-
-public record DomSpan(DomKind Kind, Range Range, object? Value, object? Key, int Length);
 
 public class JsonLoader : ILoader
 {
-    public static readonly JsonLoader Instance = new JsonLoader();
+    public static readonly JsonLoader Instance = new();
 
     public string Description => "JSON";
 
