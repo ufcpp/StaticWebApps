@@ -19,6 +19,9 @@ public interface IParser
     });
 }
 
+//todo: C# style?
+// 123, 0x12, 0b11, 1_23, 0x1_2, 0b1111_1111, ...
+
 public class AutoDetectParser : IParser
 {
     public static readonly AutoDetectParser Instance = new();
