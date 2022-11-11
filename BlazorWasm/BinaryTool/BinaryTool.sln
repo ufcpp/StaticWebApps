@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31903.59
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryTool.Blazor", "BinaryTool.Blazor\BinaryTool.Blazor.csproj", "{79C73E29-5C27-4B52-B410-57430DCFE8ED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BinaryTool", "BinaryTool\BinaryTool.csproj", "{942E2187-7BA8-4853-962C-53AAE746CA98}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BinaryTool", "BinaryTool\BinaryTool.csproj", "{942E2187-7BA8-4853-962C-53AAE746CA98}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

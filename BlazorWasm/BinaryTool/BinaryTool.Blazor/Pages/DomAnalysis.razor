@@ -1,0 +1,53 @@
+<h3>DomAnalysis</h3>
+
+@{
+    int RenderUl(IReadOnlyList<Dom.DomSpan> spans, int i)
+    {
+        var span = spans[i];
+
+        @if (span.Key is { } key)
+        {
+            <span>@key : </span>
+        }
+
+        ++i;
+
+        if(span.Kind is Dom.DomKind.Object or Dom.DomKind.Array)
+        {
+            <ul>
+                @for (int j = 0; j < span.Length; j++)
+                {
+                    <li>
+                    @{i = RenderUl(spans, i);}
+                    </li>
+                }
+            </ul>
+        }
+        else
+        {
+            @toString(span.Value)
+        }
+
+        return i;
+    }
+}
+
+@if (Results is { } r)
+{
+    RenderUl(r, 0);
+}
+
+@code {
+    [Parameter] public byte[]? InputBinary{ get; set; }
+
+    IReadOnlyList<Dom.DomSpan>? Results => InputBinary is { } data ? Dom.JsonLoader.Instance.Parse(data) : null;
+
+    static string toString(object? value) => value switch
+    {
+        null => "null",
+        true => "true",
+        false => "false",
+        string s => $"\"{s}\"",
+        { } x => x.ToString()!,
+    };
+}
