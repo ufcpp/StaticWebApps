@@ -114,7 +114,7 @@ public class AutoDetectParser : IParser
             (true, false, _, false, _, false) when !initialZero && (max > 2 || min != 2) => DecimalParser.Instance,
             (_, _, false, false, _, false) => HexParser.Instance,
             (_, _, _, _, false, false) => Base64Parser.Instance,
-            _ => null,
+            _ => Utf8Parser.Instance,
         };
     }
 }
