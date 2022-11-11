@@ -1,0 +1,26 @@
+@using BinaryTool.Binary;
+<h3>ParseBinary</h3>
+
+
+<textarea @bind="InputText">
+</textarea>
+
+<form>
+    <select @bind="selectedFormatterIndex">
+        @for (int i = 0; i < IFormatter.DefaultFormatters.Length; i++)
+        {
+            <option value="@i">@IFormatter.DefaultFormatters[i].Description</option>
+        }
+    </select>
+</form>
+
+<textarea>@OutputText</textarea>
+
+@code {
+    [Parameter] public string? InputText { get; set; }
+
+    int selectedFormatterIndex;
+    IFormatter SelectedFormatter => IFormatter.DefaultFormatters[selectedFormatterIndex];
+
+    public string? OutputText => InputText is null ? null : SelectedFormatter.Format(Parser.Parse(InputText, true));
+}
