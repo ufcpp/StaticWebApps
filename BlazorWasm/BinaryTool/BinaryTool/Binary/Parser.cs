@@ -5,9 +5,8 @@ using System.Text.RegularExpressions;
 
 namespace BinaryTool.Binary;
 
-public interface IParser
+public interface IParser : IDescriptiveItem
 {
-    string Description { get; }
     byte[] Parse(string input);
 
     public static readonly ImmutableArray<IParser> DefaultParsers = ImmutableArray.Create(new IParser[]

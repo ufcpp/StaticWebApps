@@ -1,7 +1,6 @@
 namespace BinaryTool.Dom;
 
-public interface ILoader
+public interface ILoader : IDescriptiveItem
 {
-    string Description { get; }
     List<DomSpan> Parse(byte[] data);
 }

@@ -3,31 +3,30 @@ using System.Text;
 
 namespace BinaryTool.Binary;
 
-public interface IFormatter
+public interface IFormatter : IDescriptiveItem
 {
-    string Description { get; }
     string Format(ReadOnlySpan<byte> data);
 
     public static readonly ImmutableArray<IFormatter> DefaultFormatters = ImmutableArray.Create(new IFormatter[]
     {
-        Concat.SpaceSeparatedDec,
         Concat.SpaceSeparatedHex,
+        Concat.SpaceSeparatedDec,
         Concat.ConsecutiveHex,
         Utf8.Instance,
-        Concat.CsharpDec,
-        Concat.CsharpDecMultiline,
         Concat.CsharpHex,
         Concat.CsharpHexMultiline,
-        Concat.CollectionLiteralDec,
-        Concat.CollectionLiteralDecMultiline,
+        Concat.CsharpDec,
+        Concat.CsharpDecMultiline,
         Concat.CollectionLiteralHex,
         Concat.CollectionLiteralHexMultiline,
+        Concat.CollectionLiteralDec,
+        Concat.CollectionLiteralDecMultiline,
     });
 }
 
 public class Utf8 : IFormatter
 {
-    public static readonly Utf8 Instance = new Utf8();
+    public static readonly Utf8 Instance = new();
 
     public string Description => "as UTF-8";
     public string Format(ReadOnlySpan<byte> data) => Encoding.UTF8.GetString(data);
@@ -70,7 +69,9 @@ public class Concat : IFormatter
         TraillingSeparator = trallingSeparator;
     }
 
-    public string Description => Format(new byte[] { 1, 2, 3 });
+    private string? _desc;
+    public string Description => _desc ??= Format(new byte[] { 1, 10, 100 });
+
     public string Format(ReadOnlySpan<byte> data)
     {
         var s = new StringBuilder();

@@ -1,42 +1,42 @@
 @using BinaryTool.Binary;
-<h3>ParseBinary</h3>
 
-
-<textarea @bind="InputText" style="width:100%;height:5em;">
+<textarea @bind="Text" style="width:100%;height:5em;">
 </textarea>
 
-<form>
-    <label>parse: </label>
-    <select @bind="selectedParserIndex">
-        @for (int i = 0; i < IParser.DefaultParsers.Length; i++)
-        {
-            <option value="@i">@IParser.DefaultParsers[i].Description</option>
-        }
-    </select>
-</form>
-
-<form>
-    <label>format: </label>
-    <select @bind="selectedFormatterIndex">
-        @for (int i = 0; i < IFormatter.DefaultFormatters.Length; i++)
-        {
-            <option value="@i">@IFormatter.DefaultFormatters[i].Description</option>
-        }
-    </select>
-</form>
+<Selector Label="parser" Items="IParser.DefaultParsers" @bind-SelectedItem="SelectedParser" />
+<Selector Label="format" Items="IFormatter.DefaultFormatters" @bind-SelectedItem="SelectedFormatter" />
 
 <textarea style="width:100%;height:5em;">@OutputText</textarea>
 
 @code {
     [Parameter] public string? InputText { get; set; }
 
-    int selectedParserIndex;
-    IParser SelectedParser => IParser.DefaultParsers[selectedParserIndex];
+    string? Text { get => _text; set { _text = value; Change(); } }
+    string? _text;
 
-    int selectedFormatterIndex;
-    IFormatter SelectedFormatter => IFormatter.DefaultFormatters[selectedFormatterIndex];
+    protected override void OnInitialized()
+    {
+        base.OnInitialized();
+        Text = InputText;
+    }
 
-    public byte[]? OutputBinary => InputText is { } x ? SelectedParser.Parse(x) : null;
+    IParser SelectedParser { get => _parser!; set { _parser = value; Change(); } }
+    IParser? _parser;
 
-    public string? OutputText => OutputBinary is { } x ? SelectedFormatter.Format(x) : null;
+    IFormatter SelectedFormatter { get => _formatter!; set { _formatter = value; Change(); } }
+    IFormatter? _formatter;
+
+    private void Change()
+    {
+        OutputBinary = _text is { } x ? _parser?.Parse(x) : null;
+        OutputText = OutputBinary is { } y ? _formatter?.Format(y) : null;
+        //OutputBinaryChanged.InvokeAsync(OutputBinary);
+        //OutputTextChanged.InvokeAsync(OutputText);
+    }
+
+    public byte[]? OutputBinary { get; set; }
+
+    public string? OutputText { get; set; }
+
+    //todo: OutputBinary/OutputTextChanged
 }
