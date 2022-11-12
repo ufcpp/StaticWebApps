@@ -1,3 +1,13 @@
+<style>
+    .map .key {
+        color: red;
+    }
+
+    .list .key {
+        color: blue;
+    }
+</style>
+
 @{
     int RenderUl(IReadOnlyList<Dom.DomSpan> spans, int i)
     {
@@ -5,18 +15,25 @@
 
         @if (span.Key is { } key)
         {
-            <span>@key : </span>
+            <span class="key">@key : </span>
         }
 
         ++i;
 
-        if(span.Kind is Dom.DomKind.Object or Dom.DomKind.Array)
+        if (span.Kind is Dom.DomKind.Object or Dom.DomKind.Array)
         {
             <ul>
                 @for (int j = 0; j < span.Length; j++)
                 {
-                    <li>
-                    @{i = RenderUl(spans, i);}
+                    var className = span.Kind switch
+                    {
+                        Dom.DomKind.Object => "map",
+                        Dom.DomKind.Array => "list",
+                        _ => "other",
+                    };
+
+                    <li class="@className">
+                        @{i = RenderUl(spans, i);}
                     </li>
                 }
             </ul>
