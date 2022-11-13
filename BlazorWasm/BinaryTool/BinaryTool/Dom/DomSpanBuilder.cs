@@ -3,16 +3,16 @@ namespace BinaryTool.Dom;
 internal class DomSpanBuilder
 {
     private readonly List<DomSpan> _results = new();
-    private readonly Stack<(object?, int startListIndex, int startPosition)> _hierarchy = new();
-    private string? _name;
+    private readonly Stack<(object?, int startListIndex, int startPosition, string? key)> _hierarchy = new();
+    private string? _key;
 
     public List<DomSpan> Results => _results;
 
-    public void Name(string name) => _name = name;
+    public void Key(string name) => _key = name;
 
-    public void Add(object? value, Range range) => Add(DomKind.Value, _name, value, range);
+    public void Add(object? value, Range range) => Add(DomKind.Value, _key, value, range);
 
-    public void Exception(Exception value, Range range) => Add(DomKind.Error, _name ?? "$exception", value, range);
+    public void Exception(Exception value, Range range) => Add(DomKind.Error, _key ?? "$exception", value, range);
 
     private void Add(DomKind kind, string? key, object? value, Range range)
     {
@@ -33,17 +33,17 @@ internal class DomSpanBuilder
             _results.Add(new(kind, range, value, null, 0));
         }
 
-        _name = null;
+        _key = null;
     }
 
-    private void Set(int index, DomKind kind, int length, object? value, Range range)
+    private void Set(int index, DomKind kind, int length, string key, object? value, Range range)
     {
         var parent = Parent();
 
         if (parent is Map m)
         {
-            _results[index] = new(kind, range, value, _name, length);
-            m.Add(_name!, value);
+            _results[index] = new(kind, range, value, key, length);
+            m.Add(key!, value);
         }
         else if (parent is List l)
         {
@@ -58,7 +58,7 @@ internal class DomSpanBuilder
 
     private object? Parent()
     {
-        var (parent, _, _) = _hierarchy.Count > 0 ? _hierarchy.Peek() : default;
+        var (parent, _, _, _) = _hierarchy.Count > 0 ? _hierarchy.Peek() : default;
         return parent;
     }
 
@@ -68,7 +68,7 @@ internal class DomSpanBuilder
         var index = _results.Count;
         _results.Add(default!);
 
-        _hierarchy.Push(new(obj, index, startPosition));
+        _hierarchy.Push(new(obj, index, startPosition, _key));
     }
 
     public void PushList(int startPosition)
@@ -77,15 +77,15 @@ internal class DomSpanBuilder
         var index = _results.Count;
         _results.Add(default!);
 
-        _hierarchy.Push(new(obj, index, startPosition));
+        _hierarchy.Push(new(obj, index, startPosition, _key));
     }
 
     public void Pop(int endPosition)
     {
-        var (obj, startListIndex, startPosition) = _hierarchy.Pop();
+        var (obj, startListIndex, startPosition, name) = _hierarchy.Pop();
 
-        if (obj is Map map) Set(startListIndex, DomKind.Map, map.Count, map, startPosition..endPosition);
-        else if (obj is List list) Set(startListIndex, DomKind.List, list.Count, list, startPosition..endPosition);
+        if (obj is Map map) Set(startListIndex, DomKind.Map, map.Count, name!, map, startPosition..endPosition);
+        else if (obj is List list) Set(startListIndex, DomKind.List, list.Count, name!, list, startPosition..endPosition);
     }
 
     public void PopAll(int endPosition)

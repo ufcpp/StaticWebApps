@@ -46,7 +46,7 @@ public class JsonLoader : ILoader
                     builder.Pop((int)r.BytesConsumed);
                     break;
                 case JsonTokenType.PropertyName:
-                    builder.Name(r.GetString()!);
+                    builder.Key(r.GetString()!);
                     break;
                 case JsonTokenType.Comment:
                     break;
