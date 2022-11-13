@@ -80,7 +80,7 @@
 {
     var data = InputBinary!;
     var tags = r.Build(data.Length);
-    var html = tags.ToHtml(data, _loader?.IsBinary ?? false);
+    var html = tags.ToHtml(data, IsBinary);
 
     <div class="source">
         @(new MarkupString(html))
@@ -103,10 +103,11 @@
 
     private void Change()
     {
-        Results = InputBinary is { } data ? _loader?.Parse(data) : null;
+        (Results, IsBinary) = InputBinary is { } data && _loader is { } loader ? loader.Parse(data) : default;
     }
 
     public IReadOnlyList<Dom.DomSpan>? Results { get; set; }
+    public bool IsBinary { get; set; }
 
     static string toString(object? value) => value switch
     {

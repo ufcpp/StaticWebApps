@@ -1,5 +1,4 @@
 using MessagePack;
-using System.Text.Json;
 
 namespace BinaryTool.Dom;
 
@@ -9,15 +8,13 @@ public class MessagePackLoader : ILoader
 
     public string Description => "MessagePack";
 
-    public bool IsBinary => true;
-
-    public List<DomSpan> Parse(byte[] data)
+    public (List<DomSpan> spans, bool isBinary) Parse(byte[] data)
     {
         var reader = new MessagePackReader(data);
         var builder = new DomSpanBuilder();
         Parse(ref reader, builder);
         builder.PopAll((int)reader.Consumed);
-        return builder.Results;
+        return (builder.Results, true);
     }
 
     private static void Parse(ref MessagePackReader r, DomSpanBuilder builder)

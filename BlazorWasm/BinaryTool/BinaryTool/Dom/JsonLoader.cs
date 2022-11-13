@@ -8,15 +8,13 @@ public class JsonLoader : ILoader
 
     public string Description => "JSON";
 
-    public bool IsBinary => false;
-
-    public List<DomSpan> Parse(byte[] data)
+    public (List<DomSpan> spans, bool isBinary) Parse(byte[] data)
     {
         var reader = new Utf8JsonReader(data);
         var builder = new DomSpanBuilder();
         Parse(ref reader, builder);
         builder.PopAll((int)reader.BytesConsumed);
-        return builder.Results;
+        return (builder.Results, false);
     }
 
     private static void Parse(ref Utf8JsonReader r, DomSpanBuilder builder)
