@@ -97,6 +97,7 @@
         true => "true",
         false => "false",
         string s => $"\"{s}\"",
+        DateTime d => d.ToString(@"yyyy-MM-dd hh:mm:ss"),
         { } x => x.ToString()!,
     };
 }
