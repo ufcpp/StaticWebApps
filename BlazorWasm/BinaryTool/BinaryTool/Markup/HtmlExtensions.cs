@@ -5,10 +5,13 @@ namespace BinaryTool.Markup;
 
 public static class HtmlExtensions
 {
+    private static readonly IFormatter _bin = new Concat("", " ", "", NumberFormat.Hex, true);
+    private static readonly IFormatter _str = Utf8.Instance;
+
     public static string ToHtml(this Queue<Tag> tags, ReadOnlySpan<byte> data, bool isBinary)
     {
         var s = new StringBuilder();
-        IFormatter f = isBinary ? Binary.Concat.SpaceSeparatedHex : Binary.Utf8.Instance;
+        var f = isBinary ? _bin : _str;
 
         var start = 0;
 
