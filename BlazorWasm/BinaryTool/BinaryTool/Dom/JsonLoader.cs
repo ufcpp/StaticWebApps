@@ -13,6 +13,7 @@ public class JsonLoader : ILoader
         var reader = new Utf8JsonReader(data);
         var builder = new DomSpanBuilder();
         Parse(ref reader, builder);
+        builder.PopAll((int)reader.BytesConsumed);
         return builder.Results;
     }
 
@@ -27,7 +28,7 @@ public class JsonLoader : ILoader
             catch (JsonException ex)
             {
                 builder.Exception(ex, (int)r.BytesConsumed..);
-                continue;
+                return;
             }
 
             switch (r.TokenType)

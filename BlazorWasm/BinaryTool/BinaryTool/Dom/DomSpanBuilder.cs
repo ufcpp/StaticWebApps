@@ -12,7 +12,7 @@ internal class DomSpanBuilder
 
     public void Add(object? value, Range range) => Add(DomKind.Value, _name, value, range);
 
-    public void Exception(Exception value, Range range) => Add(DomKind.Error, "$exception", value, range);
+    public void Exception(Exception value, Range range) => Add(DomKind.Error, _name ?? "$exception", value, range);
 
     private void Add(DomKind kind, string? key, object? value, Range range)
     {
@@ -21,7 +21,7 @@ internal class DomSpanBuilder
         if (parent is Map m)
         {
             _results.Add(new(kind, range, value, key, 0));
-            m.Add(key!, value);
+            m[key!] = value;
         }
         else if (parent is List l)
         {
@@ -32,6 +32,8 @@ internal class DomSpanBuilder
         {
             _results.Add(new(kind, range, value, null, 0));
         }
+
+        _name = null;
     }
 
     private void Set(int index, DomKind kind, int length, object? value, Range range)
@@ -84,5 +86,10 @@ internal class DomSpanBuilder
 
         if (obj is Map map) Set(startListIndex, DomKind.Object, map.Count, map, startPosition..endPosition);
         else if (obj is List list) Set(startListIndex, DomKind.Array, list.Count, list, startPosition..endPosition);
+    }
+
+    public void PopAll(int endPosition)
+    {
+        while (_hierarchy.Count > 0) Pop(endPosition);
     }
 }
