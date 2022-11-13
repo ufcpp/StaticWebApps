@@ -1,3 +1,5 @@
+@using BinaryTool.Markup;
+
 <style>
     .map .key {
         color: red;
@@ -5,6 +7,22 @@
 
     .list .key {
         color: blue;
+    }
+
+    .source {
+        font-family: 'Cascadia Mono', monospace;
+    }
+
+    .source .Map {
+        color: blue;
+    }
+
+    .source .List {
+        color: red;
+    }
+
+    .source .Value {
+        color: Black;
     }
 </style>
 
@@ -49,6 +67,14 @@
 
 @if (Results is { } r)
 {
+    var data = InputBinary!;
+    var tags = r.Build(data.Length);
+    var html = tags.ToHtml(data, false);
+
+    <div class="source">
+    @(new MarkupString(html))
+    </div>
+
     RenderUl(r, 0);
 }
 
