@@ -77,10 +77,10 @@
 {
     var data = InputBinary!;
     var tags = r.Build(data.Length);
-    var html = tags.ToHtml(data, false);
+    var html = tags.ToHtml(data, true);
 
     <div class="source">
-    @(new MarkupString(html))
+        @(new MarkupString(html))
     </div>
 
     RenderUl(r, 0);
@@ -89,7 +89,7 @@
 @code {
     [Parameter] public byte[]? InputBinary{ get; set; }
 
-    IReadOnlyList<Dom.DomSpan>? Results => InputBinary is { } data ? Dom.JsonLoader.Instance.Parse(data) : null;
+    IReadOnlyList<Dom.DomSpan>? Results => InputBinary is { } data ? Dom.MessagePackLoader.Instance.Parse(data) : null;
 
     static string toString(object? value) => value switch
     {
