@@ -1,12 +1,12 @@
-using BinaryTool.Binary;
+using BinaryTool.Binary.Formatter;
 using System.Text;
 
 namespace BinaryTool.Markup;
 
 public static class HtmlExtensions
 {
-    private static readonly IFormatter _bin = new Concat("", " ", "", NumberFormat.Hex, true);
-    private static readonly IFormatter _str = Utf8.Instance;
+    private static readonly IFormatter _bin = new ConcatFormatter("", " ", "", NumberFormat.Hex, true);
+    private static readonly IFormatter _str = Utf8Formatter.Instance;
 
     public static string ToHtml(this Queue<Tag> tags, ReadOnlySpan<byte> data, bool isBinary)
     {

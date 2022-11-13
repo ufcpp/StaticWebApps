@@ -8,7 +8,7 @@ public class AutoDetectLoader : ILoader
 
     public (List<DomSpan> spans, bool isBinary) Parse(byte[] data)
     {
-        var loaders = ILoader.DefaultLoaders;
+        var loaders = ILoader.Loaders;
 
         var maxCount = 0;
         (List<DomSpan> spans, bool isBinary) max = default;
