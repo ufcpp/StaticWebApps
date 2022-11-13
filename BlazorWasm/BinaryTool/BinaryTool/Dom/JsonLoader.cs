@@ -8,6 +8,8 @@ public class JsonLoader : ILoader
 
     public string Description => "JSON";
 
+    public bool IsBinary => false;
+
     public List<DomSpan> Parse(byte[] data)
     {
         var reader = new Utf8JsonReader(data);
