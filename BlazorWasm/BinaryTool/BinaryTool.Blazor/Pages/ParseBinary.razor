@@ -1,10 +1,11 @@
 @using BinaryTool.Binary;
 
+<Selector Label="Parser" Items="IParser.DefaultParsers" @bind-SelectedItem="SelectedParser" />
+
 <textarea @bind="Text" style="width:100%;height:5em;">
 </textarea>
 
-<Selector Label="parser" Items="IParser.DefaultParsers" @bind-SelectedItem="SelectedParser" />
-<Selector Label="format" Items="IFormatter.DefaultFormatters" @bind-SelectedItem="SelectedFormatter" />
+<Selector Label="Formatter" Items="IFormatter.DefaultFormatters" @bind-SelectedItem="SelectedFormatter" />
 
 <textarea style="width:100%;height:5em;">@OutputText</textarea>
 
@@ -30,13 +31,19 @@
     {
         OutputBinary = _text is { } x ? _parser?.Parse(x) : null;
         OutputText = OutputBinary is { } y ? _formatter?.Format(y) : null;
-        //OutputBinaryChanged.InvokeAsync(OutputBinary);
-        //OutputTextChanged.InvokeAsync(OutputText);
+        OutputBinaryChanged.InvokeAsync(OutputBinary);
+        OutputTextChanged.InvokeAsync(OutputText);
     }
 
+    [Parameter]
     public byte[]? OutputBinary { get; set; }
 
+    [Parameter]
+    public EventCallback<byte[]?> OutputBinaryChanged { get; set; }
+
+    [Parameter]
     public string? OutputText { get; set; }
 
-    //todo: OutputBinary/OutputTextChanged
+    [Parameter]
+    public EventCallback<string?> OutputTextChanged { get; set; }
 }
