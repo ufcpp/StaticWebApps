@@ -8,10 +8,11 @@ public interface IFormatter : IDescriptiveItem
 
     public static readonly ImmutableArray<IFormatter> DefaultFormatters = ImmutableArray.Create(new IFormatter[]
     {
+        AutoDetectFormatter.Instance,
+        Utf8Formatter.Instance,
         ConcatFormatter.SpaceSeparatedHex,
         ConcatFormatter.SpaceSeparatedDec,
         ConcatFormatter.ConsecutiveHex,
-        Utf8Formatter.Instance,
         ConcatFormatter.CsharpHex,
         ConcatFormatter.CsharpHexMultiline,
         ConcatFormatter.CsharpDec,
