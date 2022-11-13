@@ -35,7 +35,7 @@
     }
 </style>
 
-<Selector Label="type" Items="ILoader.DefaultLoaders" @bind-SelectedItem="SelectedLoader" />
+<Selector Label="type" Items="ILoader.DefaultLoadersWithAuto" @bind-SelectedItem="SelectedLoader" />
 
 @{
     int RenderUl(IReadOnlyList<Dom.DomSpan> spans, int i)

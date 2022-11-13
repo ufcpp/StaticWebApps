@@ -11,4 +11,6 @@ public interface ILoader : IDescriptiveItem
         JsonLoader.Instance,
         MessagePackLoader.Instance,
     });
+
+    public static readonly ImmutableArray<ILoader> DefaultLoadersWithAuto = ImmutableArray.CreateRange(DefaultLoaders.Prepend(AutoDetectLoader.Instance));
 }
