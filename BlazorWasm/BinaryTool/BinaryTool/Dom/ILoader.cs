@@ -10,5 +10,6 @@ public interface ILoader : IDescriptiveItem
     public static readonly ImmutableArray<ILoader> DefaultLoaders = ImmutableArray.Create(new ILoader[]
     {
         JsonLoader.Instance,
+        MessagePackLoader.Instance,
     });
 }

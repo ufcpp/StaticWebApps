@@ -1,3 +1,4 @@
+@using BinaryTool.Dom;
 @using BinaryTool.Markup;
 
 <style>
@@ -33,6 +34,8 @@
         color: black;
     }
 </style>
+
+<Selector Label="type" Items="ILoader.DefaultLoaders" @bind-SelectedItem="SelectedLoader" />
 
 @{
     int RenderUl(IReadOnlyList<Dom.DomSpan> spans, int i)
@@ -77,7 +80,7 @@
 {
     var data = InputBinary!;
     var tags = r.Build(data.Length);
-    var html = tags.ToHtml(data, true);
+    var html = tags.ToHtml(data, _loader?.IsBinary ?? false);
 
     <div class="source">
         @(new MarkupString(html))
@@ -87,9 +90,23 @@
 }
 
 @code {
-    [Parameter] public byte[]? InputBinary{ get; set; }
+    [Parameter] public byte[]? InputBinary { get; set; }
 
-    IReadOnlyList<Dom.DomSpan>? Results => InputBinary is { } data ? Dom.MessagePackLoader.Instance.Parse(data) : null;
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        Change();
+    }
+
+    private ILoader SelectedLoader { get => _loader!; set { _loader = value; Change(); } }
+    private ILoader? _loader;
+
+    private void Change()
+    {
+        Results = InputBinary is { } data ? _loader?.Parse(data) : null;
+    }
+
+    public IReadOnlyList<Dom.DomSpan>? Results { get; set; }
 
     static string toString(object? value) => value switch
     {
