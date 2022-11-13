@@ -3,18 +3,18 @@ namespace BinaryTool.Dom;
 internal class DomSpanBuilder
 {
     private readonly List<DomSpan> _results = new();
-    private readonly Stack<(object?, int startListIndex, int startPosition, string? key)> _hierarchy = new();
-    private string? _key;
+    private readonly Stack<(object?, int startListIndex, int startPosition, object? key)> _hierarchy = new();
+    private object? _key;
 
     public List<DomSpan> Results => _results;
 
-    public void Key(string name) => _key = name;
+    public void Key(object key) => _key = key;
 
     public void Add(object? value, Range range) => Add(DomKind.Value, _key, value, range);
 
     public void Exception(Exception value, Range range) => Add(DomKind.Error, _key ?? "$exception", value, range);
 
-    private void Add(DomKind kind, string? key, object? value, Range range)
+    private void Add(DomKind kind, object? key, object? value, Range range)
     {
         var parent = Parent();
 
@@ -36,7 +36,7 @@ internal class DomSpanBuilder
         _key = null;
     }
 
-    private void Set(int index, DomKind kind, int length, string key, object? value, Range range)
+    private void Set(int index, DomKind kind, int length, object key, object? value, Range range)
     {
         var parent = Parent();
 
