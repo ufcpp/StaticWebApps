@@ -1,10 +1,10 @@
-﻿namespace BinaryTool.Dom;
+namespace BinaryTool.Dom;
 
 public enum DomKind
 {
     Unknown,
-    Object,
-    Array,
+    Map,
+    List,
     Value,
 
     Error = -1,

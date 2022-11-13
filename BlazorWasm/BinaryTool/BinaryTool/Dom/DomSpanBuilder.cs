@@ -84,8 +84,8 @@ internal class DomSpanBuilder
     {
         var (obj, startListIndex, startPosition) = _hierarchy.Pop();
 
-        if (obj is Map map) Set(startListIndex, DomKind.Object, map.Count, map, startPosition..endPosition);
-        else if (obj is List list) Set(startListIndex, DomKind.Array, list.Count, list, startPosition..endPosition);
+        if (obj is Map map) Set(startListIndex, DomKind.Map, map.Count, map, startPosition..endPosition);
+        else if (obj is List list) Set(startListIndex, DomKind.List, list.Count, list, startPosition..endPosition);
     }
 
     public void PopAll(int endPosition)
