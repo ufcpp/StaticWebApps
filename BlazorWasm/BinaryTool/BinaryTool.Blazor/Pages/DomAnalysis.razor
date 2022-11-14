@@ -14,6 +14,10 @@
         font-family: 'Cascadia Mono', monospace;
     }
 
+    .tree .error {
+        color: red;
+    }
+
     .source {
         font-family: 'Cascadia Mono', monospace;
     }
@@ -44,7 +48,7 @@
     }
 
     .source .trail {
-        color: lightslategray;
+        color: gray;
     }
 </style>
 
@@ -79,6 +83,13 @@
                     </li>
                 }
             </ul>
+        }
+        else if (span.Value is Exception ex)
+        {
+            <span class="error">
+                Error at @span.Start,
+                Message: @ex.Message
+            </span>
         }
         else
         {
