@@ -20,7 +20,7 @@ internal partial class ParserHelper
     }
 
     [GeneratedRegex("""
-        [\da-zA-Z]+
+        [\da-fA-F]+
         """)]
     private static partial Regex Digits();
 }

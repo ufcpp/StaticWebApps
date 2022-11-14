@@ -2,70 +2,24 @@
 @using BinaryTool.Dom.Reader;
 @using BinaryTool.Markup;
 
-<style>
-    li.map > span.key {
-        color: lightseagreen;
-    }
+<Selector Label="DOM" Items="@_items" @bind-SelectedItem="SelectedLoader" />
 
-    li.list > span.key {
-        color: lightcoral;
-    }
+@if (Dom is { } r)
+{
+    var data = _binary!;
+    var tags = r.Build(data.Length);
+    var html = tags.ToHtml(data, IsBinary);
 
-    .tree {
-        font-family: 'Cascadia Mono', monospace;
-    }
+    <div class="source">
+        @(new MarkupString(html))
+    </div>
 
-    .tree .error {
-        color: red;
-    }
-
-    .tree .keyword {
-        color: blue;
-    }
-
-    .tree .string {
-        color: darkred;
-    }
-
-    .tree .other {
-        color: black;
-    }
-
-    .source {
-        font-family: 'Cascadia Mono', monospace;
-    }
-
-    .source span.node { background-color: #c0c0c0; }
-    .source span.node span.node { background-color: #d3c9ff; }
-    .source span.node span.node span.node { background-color: #c9e2ff; }
-    .source span.node span.node span.node span.node { background-color: #c9ffee; }
-    .source span.node span.node span.node span.node span.node { background-color: #dcffc9; }
-    .source span.node span.node span.node span.node span.node span.node { background-color: #fffdc9; }
-    .source span.node span.node span.node span.node span.node span.node span.node { background-color: #ffe3c9; }
-    .source span.node span.node span.node span.node span.node span.node span.node span.node { background-color: #ffc9c9; }
-
-    .source .map > .body {
-        color: darkred;
-    }
-
-    .source .list > .body {
-        color: darkblue;
-    }
-
-    .source .other > .body {
-        color: black;
-    }
-
-    .source .key {
-        color: lightseagreen;
-    }
-
-    .source .trail {
-        color: gray;
-    }
-</style>
-
-<Selector Label="DOM" Items="IReader.DefaultReaders" @bind-SelectedItem="SelectedLoader" />
+    <div class="tree">
+        @{
+            RenderUl(r, 0);
+        }
+    </div>
+}
 
 @{
     void RenderUl(IReadOnlyList<Dom.DomSpan> spans, int i) => RenderUlInternal(spans, i);
@@ -124,47 +78,9 @@
     }
 }
 
-@if (Dom is { } r)
-{
-    var data = _binary!;
-    var tags = r.Build(data.Length);
-    var html = tags.ToHtml(data, IsBinary);
-
-    /*
-    // for Debug
-    var tt = tags.ToArray();
-    <hr/>
-    <ul>
-        @foreach (var span in r)
-        {
-            var next = r.ElementAtOrDefault(span.NextIndex)?.KeyStart ?? data.Length;
-            <li>@span.KeyStart, @span.Start, @span.End, @next, @span.Kind, @span.NextIndex</li>
-        }
-    </ul>
-
-    <hr />
-    <ul>
-        @foreach (var tag in tt)
-        {
-            <li>@tag.Position, @tag.OppositePosition, @(tag.IsClose ? $"/{tag.Kind}" : $"{tag.Kind}")</li>
-        }
-    </ul>
-
-    <div class="source">
-        @html
-    </div>
-    //*/
-
-    <div class="source">
-        @(new MarkupString(html))
-    </div>
-
-    <div class="tree">
-        @{RenderUl(r, 0);}
-    </div>
-}
-
 @code {
+    private System.Collections.Immutable.ImmutableArray<IReader> _items = IReader.WithAutoDetect();
+
     [Parameter] public byte[]? Binary { get; set; }
 
     private byte[]? _binary;

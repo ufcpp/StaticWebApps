@@ -6,11 +6,12 @@ public interface IReader : IDescriptiveItem
 {
     (List<DomSpan> spans, bool isBinary) Read(byte[] data);
 
-    public static readonly ImmutableArray<IReader> Readers = ImmutableArray.Create(new IReader[]
+    public static readonly ImmutableArray<IReader> Defaults = ImmutableArray.Create(new IReader[]
     {
         JsonReader.Instance,
         MessagePackReader.Instance,
     });
 
-    public static readonly ImmutableArray<IReader> DefaultReaders = ImmutableArray.CreateRange(Readers.Prepend(AutoDetectReader.Instance));
+    public static ImmutableArray<IReader> WithAutoDetect() => ImmutableArray.CreateRange(
+        Defaults.Prepend(new AutoDetectReader()));
 }

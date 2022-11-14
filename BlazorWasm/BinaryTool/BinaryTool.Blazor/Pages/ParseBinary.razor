@@ -1,19 +1,24 @@
 @using BinaryTool.Binary.Parser;
 
-<Selector Label="Parser" Items="IParser.DefaultParsers" @bind-SelectedItem="SelectedParser" />
+<Selector Label="Parser" Items="@_items" @bind-SelectedItem="SelectedParser" />
 
 <textarea @bind="BindingText" style="width:100%;height:5em;">
 </textarea>
 
 @code {
+    private System.Collections.Immutable.ImmutableArray<IParser> _items = IParser.WithAutoDetect();
+
     [Parameter] public string? Text { get; set; }
+
+    [Parameter]
+    public EventCallback<string?> TextChanged { get; set; }
 
     string? BindingText { get => _text; set { if (_text != value) { _text = value; Change(); } } }
     string? _text;
 
-    protected override void OnInitialized()
+    protected override void OnParametersSet()
     {
-        base.OnInitialized();
+        base.OnParametersSet();
         BindingText = Text;
     }
 
@@ -24,6 +29,9 @@
     {
         Binary = _text is { } x ? _parser?.Parse(x) : null;
         BinaryChanged.InvokeAsync(Binary);
+
+        Text = _text;
+        TextChanged.InvokeAsync(_text);
     }
 
     [Parameter]
