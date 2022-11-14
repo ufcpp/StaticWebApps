@@ -1,7 +1,7 @@
 namespace BinaryTool.Markup;
 
 
-public record TagInfo(int Position, int OppositePosition, int Priority, string Kind)
+public record TagInfo(int Position, int OppositePosition, int Priority, string Name)
 {
     public Tag Open() => new(false, this);
     public Tag Close() => new(true, this);
@@ -9,7 +9,7 @@ public record TagInfo(int Position, int OppositePosition, int Priority, string K
 
 public readonly record struct Tag(bool IsClose, TagInfo Info) : IComparable<Tag>
 {
-    public string Kind() => Info.Kind;
+    public string Name() => Info.Name;
     public int Position() => IsClose ? Info.OppositePosition : Info.Position;
     private int OppositePosition() => IsClose ? Info.Position : Info.OppositePosition; 
 

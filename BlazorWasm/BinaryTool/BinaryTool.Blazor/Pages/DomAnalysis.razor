@@ -2,11 +2,11 @@
 @using BinaryTool.Markup;
 
 <style>
-    li.map span.key {
+    li.map > span.key {
         color: lightseagreen;
     }
 
-    li.list span.key {
+    li.list > span.key {
         color: lightcoral;
     }
 
@@ -27,15 +27,15 @@
     .source span.node span.node span.node span.node span.node span.node span.node { background-color: #ffe3c9; }
     .source span.node span.node span.node span.node span.node span.node span.node span.node { background-color: #ffc9c9; }
 
-    .source .Map .body {
+    .source .map > .body {
         color: darkred;
     }
 
-    .source .List .body {
+    .source .list > .body {
         color: darkblue;
     }
 
-    .source .Value .body {
+    .source .other > .body {
         color: black;
     }
 
@@ -44,7 +44,7 @@
     }
 
     .source .trail {
-        color: gray;
+        color: lightslategray;
     }
 </style>
 
@@ -57,26 +57,22 @@
     {
         var span = spans[i];
 
-        @if (span.Key is { } key)
-        {
-            <span class="key">@key : </span>
-        }
-
         ++i;
 
         if (span.Kind is Dom.DomKind.Map or Dom.DomKind.List)
         {
+            var className = span.Kind switch
+            {
+                Dom.DomKind.Map => "map",
+                Dom.DomKind.List => "list",
+                _ => "other",
+            };
+
             <ul>
                 @for (int j = 0; j < span.Length; j++)
                 {
-                    var className = span.Kind switch
-                    {
-                        Dom.DomKind.Map => "map",
-                        Dom.DomKind.List => "list",
-                        _ => "other",
-                    };
-
                     <li class="@className">
+                        <span class="key">@spans[i].Key : </span>
                         @{
                             i = RenderUlInternal(spans, i);
                         }

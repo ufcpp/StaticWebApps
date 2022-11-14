@@ -16,24 +16,32 @@ public static class DomSpanTagExtensions
             var next = span.NextIndex;
             var nextStart = next < spans.Count ? spans[next].KeyStart : dataLength;
 
-            Add(tags, span.KeyStart, span.Start, span.End, nextStart, span.Kind.ToString());
+            Add(tags, span.KeyStart, span.Start, span.End, nextStart, ToClassName(span.Kind));
         }
 
         tags.Sort();
         return new(tags);
     }
 
-    private static void Add(List<Tag> tags, int keyStart, int start, int end, int nextStart, string kind)
+    private static string ToClassName(DomKind kind) => kind switch
     {
-        Add(tags, keyStart, nextStart, 1, $"node {kind}");
+        DomKind.Map => "map",
+        DomKind.List => "list",
+        DomKind.Error => "error",
+        _ => "other",
+    };
+
+    private static void Add(List<Tag> tags, int keyStart, int start, int end, int nextStart, string name)
+    {
+        Add(tags, keyStart, nextStart, 1, $"node {name}");
         if (keyStart != start) Add(tags, keyStart, start, 0, "key");
         Add(tags, start, end, 0, "body");
         if (end != nextStart) Add(tags, end, nextStart, 0, "trail");
     }
 
-    private static void Add(List<Tag> tags, int start, int end, int priority, string kind)
+    private static void Add(List<Tag> tags, int start, int end, int priority, string name)
     {
-        var info = new TagInfo(start, end, priority, kind);
+        var info = new TagInfo(start, end, priority, name);
         tags.Add(info.Open());
         tags.Add(info.Close());
     }

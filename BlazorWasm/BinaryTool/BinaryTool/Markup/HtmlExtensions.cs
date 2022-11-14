@@ -23,7 +23,7 @@ public static class HtmlExtensions
                 s.Append(f.Format(data[start..pos]));
             }
 
-            if (!tag.IsClose) s.Append($"""<span class="{tag.Kind()}">""");
+            if (!tag.IsClose) s.Append($"""<span class="{tag.Name()}">""");
             else s.Append("</span>");
 
             start = pos;
