@@ -1,14 +1,14 @@
 namespace BinaryTool.Dom;
 
-public class AutoDetectLoader : ILoader
+public class AutoDetectReader : IReader
 {
-    public static readonly AutoDetectLoader Instance = new();
+    public static readonly AutoDetectReader Instance = new();
 
     public string Description => "auto detect";
 
     public (List<DomSpan> spans, bool isBinary) Parse(byte[] data)
     {
-        var loaders = ILoader.Loaders;
+        var loaders = IReader.Readers;
 
         var maxCount = 0;
         (List<DomSpan> spans, bool isBinary) max = default;

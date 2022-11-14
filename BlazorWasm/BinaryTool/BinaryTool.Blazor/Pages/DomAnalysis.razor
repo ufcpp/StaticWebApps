@@ -64,7 +64,7 @@
     }
 </style>
 
-<Selector Label="DOM" Items="ILoader.DefaultLoaders" @bind-SelectedItem="SelectedLoader" />
+<Selector Label="DOM" Items="IReader.DefaultReaders" @bind-SelectedItem="SelectedLoader" />
 
 @{
     void RenderUl(IReadOnlyList<Dom.DomSpan> spans, int i) => RenderUlInternal(spans, i);
@@ -172,8 +172,8 @@
         Change();
     }
 
-    private ILoader SelectedLoader { get => _loader!; set { _loader = value; Change(); } }
-    private ILoader? _loader;
+    private IReader SelectedLoader { get => _loader!; set { _loader = value; Change(); } }
+    private IReader? _loader;
 
     private void Change()
     {

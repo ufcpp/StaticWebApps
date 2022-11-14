@@ -2,22 +2,22 @@ using MessagePack;
 
 namespace BinaryTool.Dom;
 
-public class MessagePackLoader : ILoader
+public class MessagePackReader : IReader
 {
-    public static readonly MessagePackLoader Instance = new();
+    public static readonly MessagePackReader Instance = new();
 
     public string Description => "MessagePack";
 
     public (List<DomSpan> spans, bool isBinary) Parse(byte[] data)
     {
-        var reader = new MessagePackReader(data);
+        var reader = new MessagePack.MessagePackReader(data);
         var builder = new DomSpanBuilder();
         Parse(ref reader, builder);
         builder.PopAll((int)reader.Consumed);
         return (builder.Results, true);
     }
 
-    private static void Parse(ref MessagePackReader r, DomSpanBuilder builder)
+    private static void Parse(ref MessagePack.MessagePackReader r, DomSpanBuilder builder)
     {
         var stack = new Stack<(int, bool, bool)>();
         (int count, bool isMap, bool isKey) current = default;

@@ -2,9 +2,9 @@ using System.Text.Json;
 
 namespace BinaryTool.Dom;
 
-public class JsonLoader : ILoader
+public class JsonReader : IReader
 {
-    public static readonly JsonLoader Instance = new();
+    public static readonly JsonReader Instance = new();
 
     public string Description => "JSON";
 
