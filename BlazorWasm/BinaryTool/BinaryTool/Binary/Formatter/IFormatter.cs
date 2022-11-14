@@ -6,9 +6,8 @@ public interface IFormatter : IDescriptiveItem
 {
     string Format(ReadOnlySpan<byte> data);
 
-    public static readonly ImmutableArray<IFormatter> DefaultFormatters = ImmutableArray.Create(new IFormatter[]
+    public static readonly ImmutableArray<IFormatter> Defaults = ImmutableArray.Create(new IFormatter[]
     {
-        AutoDetectFormatter.Instance,
         Utf8Formatter.Instance,
         ConcatFormatter.SpaceSeparatedHex,
         ConcatFormatter.SpaceSeparatedDec,
@@ -22,4 +21,7 @@ public interface IFormatter : IDescriptiveItem
         ConcatFormatter.CollectionLiteralDec,
         ConcatFormatter.CollectionLiteralDecMultiline,
     });
+
+    public static ImmutableArray<IFormatter> WithAutoDetect() => ImmutableArray.CreateRange(
+        Defaults.Prepend(new AutoDetectFormatter()));
 }

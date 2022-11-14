@@ -1,12 +1,12 @@
 @using BinaryTool.Binary.Parser;
 
-<Selector Label="Parser" Items="@_parsers" @bind-SelectedItem="SelectedParser" />
+<Selector Label="Parser" Items="@_items" @bind-SelectedItem="SelectedParser" />
 
 <textarea @bind="BindingText" style="width:100%;height:5em;">
 </textarea>
 
 @code {
-    private System.Collections.Immutable.ImmutableArray<IParser> _parsers = IParser.WithAutoDetect();
+    private System.Collections.Immutable.ImmutableArray<IParser> _items = IParser.WithAutoDetect();
 
     [Parameter] public string? Text { get; set; }
 
