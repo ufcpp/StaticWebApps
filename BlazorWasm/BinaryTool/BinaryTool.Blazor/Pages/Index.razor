@@ -13,10 +13,20 @@
 7B0A202020202278223A6E756C6C2C0A092279223A205B312C22222C747275652C66616C73655D2C0A09227A223A207B2022616263223A20312C2022414243223A205B207B7D2C207B2278223A312C202279223A317D2C205B312C325D205D2C2022416263223A205B20312E312C20312E322C20312E335D207D0A7D0A
 -->
 
+<ErrorBoundary>
+
+    <ChildContent>
 <ParseBinary Text="8301c0029401a0c3c203d6ff61d11625" @bind-Binary="_data"></ParseBinary>
 <FormatBinary Binary="@_data"></FormatBinary>
 <DomAnalysis InputBinary="@_data" @bind-Dom=_dom></DomAnalysis>
 <WriteDom Dom="@_dom"></WriteDom>
+    </ChildContent>
+
+    <ErrorContent>
+        @context.Message
+    </ErrorContent>
+
+</ErrorBoundary>
 
 @code {
     byte[]? _data;
