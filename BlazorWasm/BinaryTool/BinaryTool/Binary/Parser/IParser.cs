@@ -6,15 +6,17 @@ public interface IParser : IDescriptiveItem
 {
     byte[] Parse(string input);
 
-    public static readonly ImmutableArray<IParser> DefaultParsers = ImmutableArray.Create(new IParser[]
+    public static readonly ImmutableArray<IParser> Defaults = ImmutableArray.Create(new IParser[]
     {
-        AutoDetectParser.Instance,
         HexParser.Instance,
         ConsecutiveHexParser.Instance,
         DecimalParser.Instance,
         Base64Parser.Instance,
         Utf8Parser.Instance,
     });
+
+    public static ImmutableArray<IParser> WithAutoDetect() => ImmutableArray.CreateRange(
+        Defaults.Prepend(new AutoDetectParser()));
 }
 
 //todo: C# style?

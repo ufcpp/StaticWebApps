@@ -2,13 +2,14 @@ namespace BinaryTool.Binary.Parser;
 
 public class AutoDetectParser : IParser
 {
-    public static readonly AutoDetectParser Instance = new();
+    private const string _desc = "auto detect";
 
-    public string Description => "auto detect";
+    public string Description { get; private set; } = _desc;
 
     public byte[] Parse(string input)
     {
         var p = Detect(input);
+        Description = p is null ? _desc : $"{_desc} ({p.Description})";
         return p?.Parse(input) ?? Array.Empty<byte>();
     }
 
