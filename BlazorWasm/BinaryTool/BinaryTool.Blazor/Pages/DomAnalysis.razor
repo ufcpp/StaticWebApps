@@ -18,6 +18,18 @@
         color: red;
     }
 
+    .tree .keyword {
+        color: blue;
+    }
+
+    .tree .string {
+        color: darkred;
+    }
+
+    .tree .other {
+        color: black;
+    }
+
     .source {
         font-family: 'Cascadia Mono', monospace;
     }
@@ -93,7 +105,18 @@
         }
         else
         {
-            @toString(span.Value)
+            var (str, cls) = span.Value switch
+            {
+                null => ("null", "keyword"),
+                true => ("true", "keyword"),
+                false => ("false", "keyword"),
+                string s => ($"\"{s}\"", "string"),
+                DateTime d => (d.ToString(@"yyyy-MM-dd hh:mm:ss"), "other"),
+                { } x => (x.ToString()!, "other"),
+            };
+            <span class="@cls">
+                @str
+            </span>
         }
 
         return i;
@@ -159,14 +182,4 @@
 
     public IReadOnlyList<Dom.DomSpan>? Results { get; set; }
     public bool IsBinary { get; set; }
-
-    static string toString(object? value) => value switch
-    {
-        null => "null",
-        true => "true",
-        false => "false",
-        string s => $"\"{s}\"",
-        DateTime d => d.ToString(@"yyyy-MM-dd hh:mm:ss"),
-        { } x => x.ToString()!,
-    };
 }
