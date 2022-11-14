@@ -105,14 +105,43 @@ li.list > span.key {
     font-family: 'Cascadia Mono', monospace;
 }
 
-.source span.node { background-color: #c0c0c0; }
-.source span.node span.node { background-color: #d3c9ff; }
-.source span.node span.node span.node { background-color: #c9e2ff; }
-.source span.node span.node span.node span.node { background-color: #c9ffee; }
-.source span.node span.node span.node span.node span.node { background-color: #dcffc9; }
-.source span.node span.node span.node span.node span.node span.node { background-color: #fffdc9; }
-.source span.node span.node span.node span.node span.node span.node span.node { background-color: #ffe3c9; }
-.source span.node span.node span.node span.node span.node span.node span.node span.node { background-color: #ffc9c9; }
+.source span.node {
+    border-left: 2px solid;
+    background-color: #c0c0c0;
+    border-left-color:#808080;
+}
+.source span.node span.node {
+    background-color: #d3c9ff;
+    border-left-color: #5746a6;
+}
+.source span.node span.node span.node {
+    background-color: #c9e2ff;
+    border-left-color: #5b85ba;
+}
+.source span.node span.node span.node span.node {
+    background-color: #d3ffc9;
+    border-left-color: #5fb371;
+}
+.source span.node span.node span.node span.node span.node {
+    background-color: #ffffc9;
+    border-left-color: #98ab55;
+}
+.source span.node span.node span.node span.node span.node span.node {
+    background-color: #fff2c9;
+    border-left-color: #b59d53;
+}
+.source span.node span.node span.node span.node span.node span.node span.node {
+    background-color: #ffc9c9;
+    border-left-color: #a65151;
+}
+.source span.node span.node span.node span.node span.node span.node span.node span.node {
+    background-color: #ffc9ff;
+    border-left-color: #ad4bad;
+}
+.source span.node span.node span.node span.node span.node span.node span.node span.node span.node {
+    background-color: #ededed;
+    border-left-color: #999999;
+}
 
 .source .map > .body {
     color: darkred;
