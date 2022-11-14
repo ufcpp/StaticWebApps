@@ -2,12 +2,16 @@
 @using BinaryTool.Markup;
 
 <style>
-    .map .key {
-        color: red;
+    li.map span.key {
+        color: lightseagreen;
     }
 
-    .list .key {
-        color: blue;
+    li.list span.key {
+        color: lightcoral;
+    }
+
+    .tree {
+        font-family: 'Cascadia Mono', monospace;
     }
 
     .source {
@@ -47,7 +51,9 @@
 <Selector Label="DOM" Items="ILoader.DefaultLoaders" @bind-SelectedItem="SelectedLoader" />
 
 @{
-    int RenderUl(IReadOnlyList<Dom.DomSpan> spans, int i)
+    void RenderUl(IReadOnlyList<Dom.DomSpan> spans, int i) => RenderUlInternal(spans, i);
+
+    int RenderUlInternal(IReadOnlyList < Dom.DomSpan > spans, int i)
     {
         var span = spans[i];
 
@@ -71,7 +77,9 @@
                     };
 
                     <li class="@className">
-                        @{i = RenderUl(spans, i);}
+                        @{
+                            i = RenderUlInternal(spans, i);
+                        }
                     </li>
                 }
             </ul>
@@ -120,7 +128,9 @@
         @(new MarkupString(html))
     </div>
 
-    RenderUl(r, 0);
+    <div class="tree">
+        @{RenderUl(r, 0);}
+    </div>
 }
 
 @code {
