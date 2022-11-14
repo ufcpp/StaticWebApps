@@ -20,6 +20,7 @@ public class AutoDetectParser : IParser
         var upper = false;
         var base64 = false;
         var separetor = false;
+        var nonHexAlph = false;
 
         int prevCat = 0;
         int count = 0;
@@ -32,10 +33,11 @@ public class AutoDetectParser : IParser
             var cat = c switch
             {
                 >= '0' and <= '9' => 1,
-                >= 'a' and <= 'z' => 2,
-                >= 'A' and <= 'Z' => 3,
+                >= 'a' and <= 'f' => 2,
+                >= 'A' and <= 'F' => 3,
                 '+' or '/' or '-' or '_' or ':' or '=' => 4,
                 ',' or ' ' or '\r' or '\n' or '\t' => 5,
+                (>= 'g' and <= 'z') or (>= 'G' and <= 'Z') => 6,
                 _ => 0,
             };
 
@@ -46,6 +48,7 @@ public class AutoDetectParser : IParser
                 case 3: upper = true; break;
                 case 4: base64 = true; break;
                 case 5: separetor = true; break;
+                case 6: nonHexAlph = true; break;
                 default: other = true; break;
             }
 
@@ -78,19 +81,19 @@ public class AutoDetectParser : IParser
             min = Math.Min(min, count);
         }
 
-        var alphabet = lower | upper;
+        var hexAlph = lower | upper;
         var mixedLetter = lower & upper;
 
-        return (number, alphabet, mixedLetter, base64, separetor, other) switch
+        return (number, hexAlph, mixedLetter, nonHexAlph, base64, separetor, other) switch
         {
-            (true, true, false, false, false, false) => ConsecutiveHexParser.Instance,
-            (true, _, false, false, false, false) =>
+            (true, true, false, false, false, false, false) => ConsecutiveHexParser.Instance,
+            (true, _, false, false, false, false, false) =>
                 input.Length >= 4 ? ConsecutiveHexParser.Instance :
                 lower | upper ? HexParser.Instance :
                 DecimalParser.Instance,
-            (true, false, _, false, _, false) when !initialZero && (max > 2 || min != 2) => DecimalParser.Instance,
-            (_, _, false, false, _, false) => HexParser.Instance,
-            (_, _, _, _, false, false) => Base64Parser.Instance,
+            (true, false, _, false, false, _, false) when !initialZero && (max > 2 || min != 2) => DecimalParser.Instance,
+            (_, _, false, false, false, _, false) => HexParser.Instance,
+            (_, _, _, _, _, false, false) => Base64Parser.Instance,
             _ => Utf8Parser.Instance,
         };
     }
