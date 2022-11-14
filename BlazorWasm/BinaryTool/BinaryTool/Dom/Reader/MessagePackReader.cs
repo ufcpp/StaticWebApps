@@ -8,7 +8,7 @@ public class MessagePackReader : IReader
 
     public string Description => "MessagePack";
 
-    public (List<DomSpan> spans, bool isBinary) Parse(byte[] data)
+    public (List<DomSpan> spans, bool isBinary) Read(byte[] data)
     {
         var reader = new MessagePack.MessagePackReader(data);
         var builder = new DomSpanBuilder();

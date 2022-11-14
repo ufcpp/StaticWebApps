@@ -6,7 +6,7 @@ public class AutoDetectReader : IReader
 
     public string Description => "auto detect";
 
-    public (List<DomSpan> spans, bool isBinary) Parse(byte[] data)
+    public (List<DomSpan> spans, bool isBinary) Read(byte[] data)
     {
         var loaders = IReader.Readers;
 
@@ -16,7 +16,7 @@ public class AutoDetectReader : IReader
         for (int i = 0; i < loaders.Length; i++)
         {
             var loader = loaders[i];
-            var t = loader.Parse(data);
+            var t = loader.Read(data);
             var spans = t.spans;
 
             if (spans.Count != 0 && spans[^1].Kind != DomKind.Error) return t;

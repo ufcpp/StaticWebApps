@@ -8,7 +8,7 @@ public class JsonReader : IReader
 
     public string Description => "JSON";
 
-    public (List<DomSpan> spans, bool isBinary) Parse(byte[] data)
+    public (List<DomSpan> spans, bool isBinary) Read(byte[] data)
     {
         var reader = new Utf8JsonReader(data);
         var builder = new DomSpanBuilder();

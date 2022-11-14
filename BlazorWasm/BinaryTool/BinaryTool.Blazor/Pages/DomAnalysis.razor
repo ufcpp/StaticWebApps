@@ -178,7 +178,7 @@
 
     private void Change()
     {
-        (Results, IsBinary) = InputBinary is { } data && _loader is { } loader ? loader.Parse(data) : default;
+        (Results, IsBinary) = InputBinary is { } data && _loader is { } loader ? loader.Read(data) : default;
     }
 
     public IReadOnlyList<Dom.DomSpan>? Results { get; set; }
