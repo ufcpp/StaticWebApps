@@ -2,7 +2,7 @@
 @using BinaryTool.Dom.Reader;
 @using BinaryTool.Markup;
 
-<Selector Label="DOM" Items="IReader.DefaultReaders" @bind-SelectedItem="SelectedLoader" />
+<Selector Label="DOM" Items="@_items" @bind-SelectedItem="SelectedLoader" />
 
 @if (Dom is { } r)
 {
@@ -79,6 +79,8 @@
 }
 
 @code {
+    private System.Collections.Immutable.ImmutableArray<IReader> _items = IReader.WithAutoDetect();
+
     [Parameter] public byte[]? Binary { get; set; }
 
     private byte[]? _binary;
