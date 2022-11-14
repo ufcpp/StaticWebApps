@@ -1,50 +1,34 @@
 @using BinaryTool.Binary.Parser;
-@using BinaryTool.Binary.Formatter;
 
 <Selector Label="Parser" Items="IParser.DefaultParsers" @bind-SelectedItem="SelectedParser" />
 
-<textarea @bind="Text" style="width:100%;height:5em;">
+<textarea @bind="BindingText" style="width:100%;height:5em;">
 </textarea>
 
-<Selector Label="Formatter" Items="IFormatter.DefaultFormatters" @bind-SelectedItem="SelectedFormatter" />
-
-<textarea style="width:100%;height:5em;">@OutputText</textarea>
-
 @code {
-    [Parameter] public string? InputText { get; set; }
+    [Parameter] public string? Text { get; set; }
 
-    string? Text { get => _text; set { _text = value; Change(); } }
+    string? BindingText { get => _text; set { _text = value; Change(); } }
     string? _text;
 
     protected override void OnInitialized()
     {
         base.OnInitialized();
-        Text = InputText;
+        BindingText = Text;
     }
 
     IParser SelectedParser { get => _parser!; set { _parser = value; Change(); } }
     IParser? _parser;
 
-    IFormatter SelectedFormatter { get => _formatter!; set { _formatter = value; Change(); } }
-    IFormatter? _formatter;
-
     private void Change()
     {
-        OutputBinary = _text is { } x ? _parser?.Parse(x) : null;
-        OutputText = OutputBinary is { } y ? _formatter?.Format(y) : null;
-        OutputBinaryChanged.InvokeAsync(OutputBinary);
-        OutputTextChanged.InvokeAsync(OutputText);
+        Binary = _text is { } x ? _parser?.Parse(x) : null;
+        BinaryChanged.InvokeAsync(Binary);
     }
 
     [Parameter]
-    public byte[]? OutputBinary { get; set; }
+    public byte[]? Binary { get; set; }
 
     [Parameter]
-    public EventCallback<byte[]?> OutputBinaryChanged { get; set; }
-
-    [Parameter]
-    public string? OutputText { get; set; }
-
-    [Parameter]
-    public EventCallback<string?> OutputTextChanged { get; set; }
+    public EventCallback<byte[]?> BinaryChanged { get; set; }
 }

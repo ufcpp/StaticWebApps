@@ -1,0 +1,15 @@
+@page "/Binary"
+
+<style>
+    .selector-label {
+        font-weight: bold;
+        color: steelblue;
+    }
+</style>
+
+<ParseBinary @bind-Binary="_data"></ParseBinary>
+<FormatBinary Binary="@_data"></FormatBinary>
+
+@code {
+    byte[]? _data;
+}

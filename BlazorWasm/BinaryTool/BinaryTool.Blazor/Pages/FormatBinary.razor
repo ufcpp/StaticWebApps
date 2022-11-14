@@ -1,0 +1,31 @@
+@using BinaryTool.Binary.Formatter;
+
+<Selector Label="Formatter" Items="IFormatter.DefaultFormatters" @bind-SelectedItem="SelectedFormatter" />
+
+<textarea style="width:100%;height:5em;">@Text</textarea>
+
+@code {
+    [Parameter]
+    public byte[]? Binary { get; set; }
+
+    [Parameter]
+    public string? Text { get; set; }
+
+    [Parameter]
+    public EventCallback<string?> TextChanged { get; set; }
+
+    IFormatter SelectedFormatter { get => _formatter!; set { _formatter = value; Change(); } }
+    IFormatter? _formatter;
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        Change();
+    }
+
+    private void Change()
+    {
+        Text = Binary is { } y ? _formatter?.Format(y) : null;
+        TextChanged.InvokeAsync(Text);
+    }
+}
