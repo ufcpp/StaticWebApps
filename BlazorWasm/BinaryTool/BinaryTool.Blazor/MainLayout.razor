@@ -1,5 +1,23 @@
 @inherits LayoutComponentBase
 
 <main>
-    @Body
+    <ErrorBoundary>
+        <ChildContent>
+            @Body
+        </ChildContent>
+        <ErrorContent Context="ex">
+            @{
+                OnError(@ex);
+            }
+            <p>@ex.Message</p>
+        </ErrorContent>
+    </ErrorBoundary>
 </main>
+
+@code
+{
+    private void OnError(Exception ex)
+    {
+        System.Diagnostics.Debug.WriteLine(ex);
+    }
+}
