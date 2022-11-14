@@ -1,6 +1,6 @@
 using MessagePack;
 
-namespace BinaryTool.Dom;
+namespace BinaryTool.Dom.Reader;
 
 public class MessagePackReader : IReader
 {

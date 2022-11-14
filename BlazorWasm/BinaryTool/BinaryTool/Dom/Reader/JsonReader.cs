@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace BinaryTool.Dom;
+namespace BinaryTool.Dom.Reader;
 
 public class JsonReader : IReader
 {

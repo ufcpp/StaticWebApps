@@ -1,6 +1,6 @@
 using System.Collections.Immutable;
 
-namespace BinaryTool.Dom;
+namespace BinaryTool.Dom.Reader;
 
 public interface IReader : IDescriptiveItem
 {

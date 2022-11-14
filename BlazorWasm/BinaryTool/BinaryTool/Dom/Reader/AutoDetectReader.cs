@@ -1,4 +1,4 @@
-namespace BinaryTool.Dom;
+namespace BinaryTool.Dom.Reader;
 
 public class AutoDetectReader : IReader
 {
@@ -21,7 +21,7 @@ public class AutoDetectReader : IReader
 
             if (spans.Count != 0 && spans[^1].Kind != DomKind.Error) return t;
 
-            if(spans.Count > maxCount)
+            if (spans.Count > maxCount)
             {
                 maxCount = spans.Count;
                 max = t;
