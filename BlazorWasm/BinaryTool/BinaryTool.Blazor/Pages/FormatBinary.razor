@@ -17,15 +17,21 @@
     IFormatter SelectedFormatter { get => _formatter!; set { _formatter = value; Change(); } }
     IFormatter? _formatter;
 
+    private byte[]? _binary;
+
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
-        Change();
+        if (_binary != Binary)
+        {
+            _binary = Binary;
+            Change();
+        }
     }
 
     private void Change()
     {
-        Text = Binary is { } y ? _formatter?.Format(y) : null;
+        Text = _binary is { } y ? _formatter?.Format(y) : null;
         TextChanged.InvokeAsync(Text);
     }
 }

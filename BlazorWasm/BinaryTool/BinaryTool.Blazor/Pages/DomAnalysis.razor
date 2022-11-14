@@ -76,12 +76,12 @@
 
         ++i;
 
-        if (span.Kind is Dom.DomKind.Map or Dom.DomKind.List)
+        if (span.Kind is BinaryTool.Dom.DomKind.Map or BinaryTool.Dom.DomKind.List)
         {
             var className = span.Kind switch
             {
-                Dom.DomKind.Map => "map",
-                Dom.DomKind.List => "list",
+                BinaryTool.Dom.DomKind.Map => "map",
+                BinaryTool.Dom.DomKind.List => "list",
                 _ => "other",
             };
 
@@ -124,9 +124,9 @@
     }
 }
 
-@if (Results is { } r)
+@if (Dom is { } r)
 {
-    var data = InputBinary!;
+    var data = _binary!;
     var tags = r.Build(data.Length);
     var html = tags.ToHtml(data, IsBinary);
 
@@ -165,12 +165,19 @@
 }
 
 @code {
-    [Parameter] public byte[]? InputBinary { get; set; }
+    [Parameter] public byte[]? Binary { get; set; }
+
+    private byte[]? _binary;
 
     protected override void OnParametersSet()
     {
         base.OnParametersSet();
-        Change();
+
+        if (_binary != Binary)
+        {
+            _binary = Binary;
+            Change();
+        }
     }
 
     private IReader SelectedLoader { get => _loader!; set { _loader = value; Change(); } }
@@ -178,9 +185,20 @@
 
     private void Change()
     {
-        (Results, IsBinary) = InputBinary is { } data && _loader is { } loader ? loader.Read(data) : default;
+        (Dom, IsBinary) = _binary is { } data && _loader is { } loader ? loader.Read(data) : default;
+        DomChanged.InvokeAsync(Dom);
+        IsBinaryChanged.InvokeAsync(IsBinary);
     }
 
-    public IReadOnlyList<Dom.DomSpan>? Results { get; set; }
+    [Parameter]
+    public IReadOnlyList<Dom.DomSpan>? Dom { get; set; }
+
+    [Parameter]
+    public EventCallback<IReadOnlyList<Dom.DomSpan>?> DomChanged { get; set; }
+
+    [Parameter]
     public bool IsBinary { get; set; }
+
+    [Parameter]
+    public EventCallback<bool> IsBinaryChanged { get; set; }
 }
