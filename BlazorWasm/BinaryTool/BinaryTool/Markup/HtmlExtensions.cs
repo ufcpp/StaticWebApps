@@ -17,15 +17,16 @@ public static class HtmlExtensions
 
         while (tags.TryDequeue(out var tag))
         {
-            if (tag.Position != start)
+            var pos = tag.Position();
+            if (pos != start)
             {
-                s.Append(f.Format(data[start..tag.Position]));
+                s.Append(f.Format(data[start..pos]));
             }
 
-            if (tag.Kind is { } kind) s.Append($"""<span class="{kind}">""");
+            if (!tag.IsClose) s.Append($"""<span class="{tag.Kind()}">""");
             else s.Append("</span>");
 
-            start = tag.Position;
+            start = pos;
         }
 
         s.Append(f.Format(data[start..]));

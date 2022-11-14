@@ -39,14 +39,14 @@ public class MessagePackLoader : ILoader
 
             if (!current.isMap || !current.isKey)
             {
-                if (v is Exception ex) builder.Exception(ex, s..(int)e);
-                else builder.Add(obj, s..(int)e);
+                if (v is Exception ex) builder.Exception(ex, (s, (int)e));
+                else builder.Add(obj, (s, (int)e));
                 decl((int)e);
                 current.isKey = true;
             }
             else
             {
-                builder.Key(obj!);
+                builder.Key(obj!, s);
                 current.isKey = false;
             }
         }
@@ -103,7 +103,7 @@ public class MessagePackLoader : ILoader
         }
         catch (Exception ex)
         {
-            builder.Exception(ex, s..);
+            builder.Exception(ex, (s, (int)r.Sequence.Length));
             return;
         }
     }

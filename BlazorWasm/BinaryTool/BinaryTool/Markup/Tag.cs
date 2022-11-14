@@ -1,12 +1,21 @@
 namespace BinaryTool.Markup;
 
-public readonly record struct Tag(int Position, int OppositePosition, string? Kind) : IComparable<Tag>
+
+public record TagInfo(int Position, int OppositePosition, int Priority, string Kind)
 {
-    public bool IsClose => Kind is null;
+    public Tag Open() => new(false, this);
+    public Tag Close() => new(true, this);
+}
+
+public readonly record struct Tag(bool IsClose, TagInfo Info) : IComparable<Tag>
+{
+    public string Kind() => Info.Kind;
+    public int Position() => IsClose ? Info.OppositePosition : Info.Position;
+    private int OppositePosition() => IsClose ? Info.Position : Info.OppositePosition; 
 
     public int CompareTo(Tag other)
     {
-        var pos = Position.CompareTo(other.Position);
+        var pos = Position().CompareTo(other.Position());
         if (pos != 0) return pos;
 
         // close tags must preceed open tags.
@@ -14,6 +23,11 @@ public readonly record struct Tag(int Position, int OppositePosition, string? Ki
         if (!IsClose && other.IsClose) return 1;
 
         // reverse order for opposite tags.
-        return -OppositePosition.CompareTo(other.OppositePosition);
+        var opp = -OppositePosition().CompareTo(other.OppositePosition());
+        if(opp != 0) return opp;
+
+        var p = Info.Priority.CompareTo(other.Info.Priority);
+        if (!IsClose) p = -p;
+        return p;
     }
 }

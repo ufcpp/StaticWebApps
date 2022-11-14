@@ -27,7 +27,7 @@ public class JsonLoader : ILoader
             }
             catch (JsonException ex)
             {
-                builder.Exception(ex, (int)r.BytesConsumed..);
+                builder.Exception(ex, ((int)r.BytesConsumed, (int)r.ValueSequence.Length));
                 return;
             }
 
@@ -46,7 +46,7 @@ public class JsonLoader : ILoader
                     builder.Pop((int)r.BytesConsumed);
                     break;
                 case JsonTokenType.PropertyName:
-                    builder.Key(r.GetString()!);
+                    builder.Key(r.GetString()!, (int)r.TokenStartIndex);
                     break;
                 case JsonTokenType.Comment:
                     break;
@@ -73,5 +73,5 @@ public class JsonLoader : ILoader
 
 file static class Ex
 {
-    public static Range Range(this Utf8JsonReader r) => (int)r.TokenStartIndex..(int)r.BytesConsumed;
+    public static (int start, int end) Range(this Utf8JsonReader r) => ((int)r.TokenStartIndex, (int)r.BytesConsumed);
 }
