@@ -63,3 +63,73 @@ h1:focus {
 .loading-progress-text:after {
     content: var(--blazor-load-percentage-text, "Loading");
 }
+
+textarea {
+    font-family: 'Cascadia Mono', monospace;
+}
+
+.selector-label {
+    font-weight: bold;
+    color: steelblue;
+}
+
+li.map > span.key {
+    color: lightseagreen;
+}
+
+li.list > span.key {
+    color: lightcoral;
+}
+
+.tree {
+    font-family: 'Cascadia Mono', monospace;
+}
+
+.tree .error {
+    color: red;
+}
+
+.tree .keyword {
+    color: blue;
+}
+
+.tree .string {
+    color: darkred;
+}
+
+.tree .other {
+    color: black;
+}
+
+.source {
+    font-family: 'Cascadia Mono', monospace;
+}
+
+.source span.node { background-color: #c0c0c0; }
+.source span.node span.node { background-color: #d3c9ff; }
+.source span.node span.node span.node { background-color: #c9e2ff; }
+.source span.node span.node span.node span.node { background-color: #c9ffee; }
+.source span.node span.node span.node span.node span.node { background-color: #dcffc9; }
+.source span.node span.node span.node span.node span.node span.node { background-color: #fffdc9; }
+.source span.node span.node span.node span.node span.node span.node span.node { background-color: #ffe3c9; }
+.source span.node span.node span.node span.node span.node span.node span.node span.node { background-color: #ffc9c9; }
+
+.source .map > .body {
+    color: darkred;
+}
+
+.source .list > .body {
+    color: darkblue;
+}
+
+.source .other > .body {
+    color: black;
+}
+
+.source .key {
+    color: lightseagreen;
+}
+
+.source .trail {
+    color: gray;
+}
