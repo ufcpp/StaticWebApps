@@ -1,0 +1,20 @@
+@page "/Sample"
+
+<select @bind="SelectedText">
+    @foreach (var data in SampleData)
+    {
+        <option value="@data">@Limit(data)</option>
+    }
+</select>
+
+<Index Text="@SelectedText"></Index>
+
+@code {
+    private string? SelectedText{ get; set; }
+
+    private static string Limit(string s)
+    {
+        var len = Math.Min(s.Length, 50);
+        return s[..len];
+    }
+}
