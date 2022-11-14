@@ -1,0 +1,26 @@
+@using BinaryTool.Dom.Writer
+
+<Selector Label="Writer" Items="IWriter.DefaultWriters" @bind-SelectedItem="SelectedWriter" />
+
+<FormatBinary Binary="@Binary"></FormatBinary>
+
+@code {
+    [Parameter]
+    public IReadOnlyList<Dom.DomSpan>? Dom { get; set; }
+
+    protected override void OnParametersSet()
+    {
+        base.OnParametersSet();
+        Change();
+    }
+
+    private void Change()
+    {
+        Binary = Dom is { } x ? _writer?.Write(x) : null;
+    }
+
+    IWriter SelectedWriter { get => _writer!; set { _writer = value; Change(); } }
+    IWriter? _writer;
+
+    public byte[]? Binary{ get; set; }
+}

@@ -1,0 +1,49 @@
+@typeparam TItem where TItem: notnull
+
+@using System.Collections.Immutable;
+
+<form>
+    <label class="selector-label">@Label: </label>
+    <select @bind="SelectedIndex">
+        @if (Items != null)
+        {
+            for (int i = 0; i < Items.Length; i++)
+            {
+                <option value="@i">@toString(Items[i])</option>
+            }
+        }
+    </select>
+</form>
+
+@code {
+    [Parameter] public string? Label { get; set; }
+    [Parameter] public ImmutableArray<TItem> Items { get; set; }
+
+    [Parameter]
+    public TItem? SelectedItem { get; set; }
+
+    [Parameter]
+    public EventCallback<TItem> SelectedItemChanged { get; set; }
+
+    private int _i;
+    private int SelectedIndex { get => _i; set { _i = value; Change(value); } }
+
+    protected override async Task OnInitializedAsync()
+    {
+        await base.OnInitializedAsync();
+
+        if (Items.Length > 0)
+        {
+            SelectedItem = Items[0];
+            await SelectedItemChanged.InvokeAsync(SelectedItem);
+        }
+    }
+
+    private void Change(int i)
+    {
+        SelectedItem = Items[i];
+        SelectedItemChanged.InvokeAsync(SelectedItem);
+    }
+
+    private string? toString(TItem item) => item is IDescriptiveItem d ? d.Description : item?.ToString();
+}
