@@ -8,7 +8,10 @@ public interface IWriter : IDescriptiveItem
 
     public static readonly ImmutableArray<IWriter> DefaultWriters = ImmutableArray.Create(new IWriter[]
     {
-        JsonWriter.Instance,
+        JsonWriter.Default,
+        JsonWriter.Indent,
+        JsonWriter.NoEscape,
+        JsonWriter.IndentNoEscape,
         MessagePackWriter.Instance,
     });
 }
