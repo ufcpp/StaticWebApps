@@ -30,6 +30,7 @@ public class MessagePackReader : IReader
             {
                 builder.Pop(pos);
                 current = stack.Pop();
+                decl(pos);
             }
         }
 
