@@ -50,7 +50,8 @@ internal class DomSpanBuilder
         if (parent is Map m)
         {
             _results[index] = new(kind, keyStart, range.start, range.end, key, value, nextIndex, length);
-            m.Add(key!, value);
+
+            if (key is not null) m.Add(key!, value);
         }
         else if (parent is List l)
         {
