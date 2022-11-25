@@ -1,6 +1,10 @@
 @page "/"
+@using Microsoft.AspNetCore.Components.Forms;
 
 <ParseBinary @bind-Text="Text" @bind-Binary="_data"></ParseBinary>
+
+<label class="selector-label">Load from File:</label> <InputFile OnChange="OnChange" class="binfile" />
+
 <FormatBinary Binary="@_data"></FormatBinary>
 <DomAnalysis Binary="@_data" @bind-Dom=_dom></DomAnalysis>
 <WriteDom Dom="@_dom"></WriteDom>
@@ -11,4 +15,15 @@
 
     byte[]? _data;
     IReadOnlyList<Dom.DomSpan>? _dom;
+
+    async Task OnChange(InputFileChangeEventArgs e)
+    {
+        if (e.GetMultipleFiles(1).FirstOrDefault() is not { } file) return;
+
+        using var stream = file.OpenReadStream();
+        using var ms = new MemoryStream();
+        await stream.CopyToAsync(ms);
+
+        _data = ms.ToArray();
+    }
 }

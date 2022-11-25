@@ -4,6 +4,11 @@
 
 <textarea style="width:100%;height:5em;">@Text</textarea>
 
+@if (Binary is { } bin)
+{
+    <p class="bytesread">@bin.Length bytes</p>
+}
+
 @code {
     private System.Collections.Immutable.ImmutableArray<IFormatter> _items = IFormatter.WithAutoDetect();
 

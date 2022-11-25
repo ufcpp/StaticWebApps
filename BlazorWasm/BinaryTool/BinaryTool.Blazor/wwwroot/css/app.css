@@ -162,3 +162,14 @@ li.list > span.key {
 .source .trail {
     color: gray;
 }
+
+.bytesread {
+    margin: 0px 0px 0.5em 0.5em;
+    padding: 0px;
+    font-size: small;
+    color:teal;
+}
+
+.binfile {
+    font-size: 70%;
+}
