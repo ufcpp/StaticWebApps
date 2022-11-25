@@ -2,7 +2,9 @@
 @using Microsoft.AspNetCore.Components.Forms;
 
 <ParseBinary @bind-Text="Text" @bind-Binary="_data"></ParseBinary>
-<InputFile OnChange="OnChange" />
+
+<label class="selector-label">Load from File:</label> <InputFile OnChange="OnChange" class="binfile" />
+
 <FormatBinary Binary="@_data"></FormatBinary>
 <DomAnalysis Binary="@_data" @bind-Dom=_dom></DomAnalysis>
 <WriteDom Dom="@_dom"></WriteDom>

@@ -169,3 +169,7 @@ li.list > span.key {
     font-size: small;
     color:teal;
 }
+
+.binfile {
+    font-size: 70%;
+}
