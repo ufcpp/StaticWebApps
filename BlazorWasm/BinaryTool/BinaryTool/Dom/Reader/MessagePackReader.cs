@@ -22,33 +22,42 @@ public class MessagePackReader : IReader
         var stack = new Stack<(int, bool, bool)>();
         (int count, bool isMap, bool isKey) current = default;
 
-        void push((int, bool, bool) c) { stack.Push(current); current = c; }
+        void push(int count, bool isMap)
+        {
+            var c = (count, isMap, false);
+            stack.Push(current);
+            current = c;
+        }
+
         void decl(int pos)
         {
             --current.count;
             if (current.count == 0)
             {
-                builder.Pop(pos);
-                current = stack.Pop();
-                decl(pos);
+                pop(pos);
             }
+        }
+
+        void pop(int pos)
+        {
+            builder.Pop(pos);
+            current = stack!.Pop();
+            decl(pos);
         }
 
         void add<T>(int s, T v, long e)
         {
             object? obj = typeof(T) == typeof(Nil) ? null : v;
 
-            if (!current.isMap || !current.isKey)
+            if (current.isMap && current.isKey)
+            {
+                builder.Key(obj!, s);
+            }
+            else
             {
                 if (v is Exception ex) builder.Exception(ex, (s, (int)e));
                 else builder.Add(obj, (s, (int)e));
                 decl((int)e);
-                current.isKey = true;
-            }
-            else
-            {
-                builder.Key(obj!, s);
-                current.isKey = false;
             }
         }
 
@@ -83,15 +92,17 @@ public class MessagePackReader : IReader
                     case MessagePackType.Array:
                         {
                             r.TryReadArrayHeader(out var c);
-                            push((c, false, false));
+                            push(c, false);
                             builder.PushList(s);
+                            if (c == 0) pop((int)r.Consumed);
                         }
                         break;
                     case MessagePackType.Map:
                         {
                             r.TryReadMapHeader(out var c);
-                            push((c, true, true));
+                            push(c, true);
                             builder.PushMap(s);
+                            if (c == 0) pop((int)r.Consumed);
                         }
                         break;
                     case MessagePackType.Extension:
@@ -100,6 +111,9 @@ public class MessagePackReader : IReader
                     default:
                         break;
                 }
+
+                if (current.isMap)
+                    current.isKey = !current.isKey;
             }
         }
         catch (Exception ex)
